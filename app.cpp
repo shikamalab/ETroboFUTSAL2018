@@ -312,7 +312,7 @@ void ultrasonic_task(intptr_t unused) {
             // ev3_lcd_draw_string("ultrasonic_task", 10, 80);
             gRunPattern->sonar_distance = ev3_ultrasonic_sensor_get_distance(EV3_PORT_3);
             // sprintf(sonar,"%3d cm", gRunPattern->sonar_distance);
-            ev3_lcd_draw_string(sonar,40,100);
+            ev3_lcd_draw_string(sonar,40,880);
             // 2000ms毎に定期的なリセット
             if (count_u % 80 == 0)
             {
