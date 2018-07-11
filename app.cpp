@@ -307,7 +307,7 @@ void ultrasonic_task(intptr_t unused) {
     char sonar[20];
     slp_tsk();
     while (1) {
-        // 25ms毎に超音波測距
+        // 25ms毎に超音波測距を発射
         if (++count_u % 5 == 0){
             // ev3_lcd_draw_string("ultrasonic_task", 10, 80);
             gRunPattern->sonar_distance = ev3_ultrasonic_sensor_get_distance(EV3_PORT_3);
