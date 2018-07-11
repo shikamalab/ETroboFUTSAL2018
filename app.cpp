@@ -304,7 +304,7 @@ void bt_task(intptr_t unused) {
 // 概要 : 超音波センサ読み出しとリセットを定期的に行うタスク
 //*****************************************************************************
 void ultrasonic_task(intptr_t unused) {
-    char sonar[20];
+    char sonar[15];
     slp_tsk();
     while (1) {
         // 25ms毎に超音波測距
