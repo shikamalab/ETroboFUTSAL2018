@@ -20,7 +20,7 @@ void Scenario::R(){
 
     // for CS
     // // 直進1
-    mRP->set_pid_params(1.3, 0.01, 0.05);
+    mRP->set_pid_params(1.45, 0.01, 0.08);
     mRP->run_pid(0, 60, 2000);
     ev3_speaker_play_tone(NOTE_A4, 300);
     // カーブ1
@@ -28,7 +28,7 @@ void Scenario::R(){
     mRP->run_pid(0, 55, 1820);
     ev3_speaker_play_tone(NOTE_A4, 300);
     //直進2
-    mRP->set_pid_params(1.3, 0.01, 0.05);
+    mRP->set_pid_params(1.45, 0.01, 0.08);
     mRP->run_pid(0, 55, 450);
     ev3_speaker_play_tone(NOTE_A4, 300);
     // カーブ2
@@ -40,7 +40,7 @@ void Scenario::R(){
     mRP->run_pid(0, 45, 650);
     ev3_speaker_play_tone(NOTE_A4, 300);
     //直進3
-    mRP->set_pid_params(1.3, 0.01, 0.05);
+    mRP->set_pid_params(1.5, 0.01, 0.05);
     mRP->run_pid(0, 50, 700);
     ev3_speaker_play_tone(NOTE_A4, 300);
     // カーブ4
@@ -49,7 +49,7 @@ void Scenario::R(){
     mRP->run_pid(0, 45, 1200);
     ev3_speaker_play_tone(NOTE_A4, 300);
     //直進3
-    mRP->set_pid_params(1.3, 0.01, 0.05);
+    mRP->set_pid_params(1.45, 0.01, 0.08);
     mRP->run_pid(0, 50, 2700);
     ev3_speaker_play_tone(NOTE_A4, 300);
 
