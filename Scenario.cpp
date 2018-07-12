@@ -20,7 +20,7 @@ void Scenario::R(){
 
     // for CS
     // // 直進1
-    mRP->set_pid_params(1.45, 0.01, 0.08);
+    mRP->set_pid_params(1.45, 0.01, 0.10);
     mRP->run_pid(0, 60, 2000);
     ev3_speaker_play_tone(NOTE_A4, 300);
     // カーブ1
