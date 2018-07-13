@@ -74,10 +74,8 @@ void Scenario::R(){
             break;
         case 2: // ブロックの色を読まず寄切
         default:// 寄切
-            mRP->SetTailAngle(60, -50);
             mRP->TurnR180();
             mRP->move(30, 0.5, 30);
-            mRP->SetTailAngle(60, 50);
             break;
     }
     // 2
@@ -118,10 +116,8 @@ void Scenario::R(){
             break;
         case 2: // ブロックの色を読まず寄切
         default:// 寄切
-            mRP->SetTailAngle(60, -115);
             mRP->TurnL180();
             mRP->move(30, 2.2, 30);
-            mRP->SetTailAngle(60, 115);
             break;
     }
     // 4
@@ -140,12 +136,10 @@ void Scenario::R(){
             break;
         case 2: // ブロックの色を読まず寄切
         default:// 寄切
-            mRP->SetTailAngle(60, -35);
             mRP->TurnR180();
             mRP->move(30, 0, 75);
             mRP->TurnL90();
             mRP->move(-10,-0.2, 15);
-            mRP->SetTailAngle(60, 35);
             break;
     }
 
@@ -168,10 +162,8 @@ void Scenario::R(){
             break;
         case 2: // ブロックの色を読まず寄切
         default:// 寄切
-            mRP->SetTailAngle(60, -50);
             mRP->TurnR180();
             mRP->move(30, -1.5, 35);
-            mRP->SetTailAngle(60, 50);
             break;
     }
     // 6
@@ -212,10 +204,8 @@ void Scenario::R(){
             break;
         case 2: // ブロックの色を読まず寄切
         default:// 寄切
-            mRP->SetTailAngle(60, -115);
             mRP->TurnL180();
             mRP->move(30, 2.2, 30);
-            mRP->SetTailAngle(60, 115);
             break;
     }
     // 8
@@ -234,12 +224,10 @@ void Scenario::R(){
             break;
         case 2: // ブロックの色を読まず寄切
         default:// 寄切
-            mRP->SetTailAngle(60, -35);
             mRP->TurnR180();
             mRP->move(30, 0, 80);
             mRP->TurnL90();
             mRP->move(-10, 1.5, 10);
-            mRP->SetTailAngle(60, 35);
             break;
     }
 
@@ -268,33 +256,31 @@ void Scenario::L(){
 	mRP->set_pid_params(0.0, 0.0, 0.0);
 	mRP->run_pid(0, 30, 100);
 	// 直進1
-	mRP->set_pid_params(1.43, 0.01, 0.1);
-	mRP->run_pid(0, 61, 2300);//60
+	mRP->set_pid_params(0.6, 0.1, 0.05);
+	mRP->run_pid(0, 61, 1950);//60
 	// 第１コーナー
 	mRP->set_pid_params(1.8, 0.00, 0.1);
-	mRP->run_pid(0, 50, 1400);
-    // 直進２
-	mRP->set_pid_params(1.43, 0.01, 0.08);
-	mRP->run_pid(0, 55,1900);	//速度余裕有
-
-
+	mRP->run_pid(0, 44, 1850);
     // 第２コーナー
-	mRP->set_pid_params(1.8, 0.00, 0.1);
-	mRP->run_pid(0, 46, 600);
-	// 直進３
-    mRP->set_pid_params(1.43, 0.00, 0.08);
-	mRP->run_pid(0, 44, 600);//44
+	mRP->set_pid_params(1.6, 0.01, 0.1);
+	mRP->run_pid(0, 55, 3000);	//速度余裕有
 
-	// 第３コーナー 鬼門　P高め
+
+    // 第３コーナー
+	mRP->set_pid_params(1.6, 0.00, 0.1);
+	mRP->run_pid(0, 43, 500);
+	// 第4コーナー
+    mRP->set_pid_params(1.6, 0.00, 0.1);
+	mRP->run_pid(0, 44, 1100);//44
+
+	// 直進2
     mRP->reset_pid_params();
     //mRP->set_pid_params(2.2, 1.8, 0.05);
     //mRP->run_pid(1, 80, 1500);
-	mRP->set_pid_params(2.5, 0.1, 0.05);
-	mRP->run_pid(0, 45, 700);// 60, 1300
+	mRP->set_pid_params(0.6, 0.1, 0.05);
+	mRP->run_pid(0, 61, 1500);// 60, 1300
     //試走会にて200mmオーバー
-    //直進４
-    mRP->set_pid_params(1.43, 0.01, 0.08);
-    mRP->run_pid(0, 55, 2500);
+
     mRP->move(30, 2, 100);
     //灰色
     //mRP->set_pid_params(0.0, 0.0, 0.0);
@@ -329,27 +315,48 @@ void Scenario::RGB2HSV(void){
 }
 
 void Scenario::TEST(void){
-    // mRP->SetArmAngle(80, -20); //-20
-    // mRP->set_pid_params(0.4, 0.15, 0.006);
-    // mRP->ColorDetect(0);
-    // mRP->Turn(-30);
-    // mRP->ColorDetect(0);
-    // mRP->Turn(-90);
-    // mRP->ColorDetect(0);
-    // mRP->Turn(-30);
-    // mRP->ColorDetect(0);
-    // mRP->Turn(-60);
-    // mRP->ColorDetect(0);
-    // mRP->Turn(-120);
-    // mRP->ColorDetect(0);
-    // mRP->Turn(-60);
-    // while(1){
-    // mRP->ColorDetect(0);
-    // mRP->Turn(-120);
-    // mRP->ColorDetect(0);
-    // mRP->Turn(-60);
-    mRP->flag_NEO = true;
-    mRP->eyesight(30);
+    // タイム計測
+    mRP->setStartTime();
+    // Rコース
+    // スタート
+    mRP->set_pid_params(0.00, 0.02, 0.0);
+    mRP->run_pid(0, 30, 50);
+
+    // for CS
+    // // 直進1
+    mRP->set_pid_params(1.43, 0.01, 0.10);
+    mRP->run_pid(0, 60, 2000);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    // カーブ1
+    mRP->set_pid_params(1.6, 0.03, 0.12);
+    mRP->run_pid(0, 55, 1820);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    //直進2
+    mRP->set_pid_params(1.43, 0.01, 0.08);
+    mRP->run_pid(0, 55, 450);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    // カーブ2
+    mRP->set_pid_params(1.6, 0.03, 0.13);
+    mRP->run_pid(0, 50, 550);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    //カーブ3
+    mRP->set_pid_params(2.15, 0.03, 0.13);
+    mRP->run_pid(0, 45, 650);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    //直進3
+    mRP->set_pid_params(1.5, 0.01, 0.08);
+    mRP->run_pid(0, 50, 700);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    // カーブ4
+    //mRP->reset_pid_params();
+    mRP->set_pid_params(2.15, 0.03, 0.13);
+    mRP->run_pid(0, 45, 1200);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    //直進3
+    mRP->set_pid_params(1.45, 0.01, 0.08);
+    mRP->run_pid(0, 50, 2700);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+
 }
 
 void Scenario::DoPuzzle(){
