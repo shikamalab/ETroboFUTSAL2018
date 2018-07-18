@@ -265,50 +265,38 @@ void Scenario::L(){
     //mRP->TurnR(90);
 
 
-	mRP->set_pid_params(0.0, 0.0, 0.0);
-	mRP->run_pid(0, 30, 100);
+	mRP->set_pid_params(0.0, 0.01, 0.0);    
+        mRP->run_pid(0, 30, 50);
 	// 直進1
-	mRP->set_pid_params(1.43, 0.01, 0.1);
-	mRP->run_pid(0, 61, 2300);//60
+	mRP->set_pid_params(1.0, 0.1, 0.09);
+	mRP->run_pid(0, 60, 2200);//60
 	// 第１コーナー
-	mRP->set_pid_params(1.8, 0.00, 0.1);
-	mRP->run_pid(0, 50, 1400);
-    // 直進２
-	mRP->set_pid_params(1.43, 0.01, 0.08);
-	mRP->run_pid(0, 55,1900);	//速度余裕有
-
-
-    // 第２コーナー
-	mRP->set_pid_params(1.8, 0.00, 0.1);
-	mRP->run_pid(0, 46, 600);
-	// 直進３
-    mRP->set_pid_params(1.43, 0.00, 0.08);
-	mRP->run_pid(0, 44, 600);//44
-
-	// 第３コーナー 鬼門　P高め
-    mRP->reset_pid_params();
-    //mRP->set_pid_params(2.2, 1.8, 0.05);
-    //mRP->run_pid(1, 80, 1500);
-	mRP->set_pid_params(2.5, 0.1, 0.05);
-	mRP->run_pid(0, 45, 700);// 60, 1300
-    //試走会にて200mmオーバー
-    //直進４
-    mRP->set_pid_params(1.43, 0.01, 0.08);
-    mRP->run_pid(0, 55, 2500);
-    mRP->move(30, 2, 100);
-    //灰色
-    //mRP->set_pid_params(0.0, 0.0, 0.0);
-    //mRP->run_pid(0, 35, 200);
-    //エッジ切り替え1,40
-    //mRP->run_pid(1, 20, 100);
-
-    
-    //Reset PID
-    mRP->reset_pid_params();
-    mRP->set_pid_params(0.6, 0.1, 0.1);
-    mRP->run_pid(1, 30, 100);
-    
-    DoPuzzle();
+	mRP->set_pid_params(1.2, 0.00, 0.1);
+	mRP->run_pid(0, 50, 1800);
+        // 直進2
+	mRP->set_pid_params(1.0, 0.1, 0.09);
+	mRP->run_pid(0, 50, 1600);
+	mRP->set_pid_params(1.0, 0.1, 0.09);
+	mRP->run_pid(0, 45, 150);	//速度余裕有
+	ev3_speaker_play_tone(NOTE_AS4, 300);
+	// 第2コーナー
+	mRP->set_pid_params(1.7, 0.00, 0.1);
+	mRP->run_pid(0, 40, 600);
+	// 直進3
+	mRP->set_pid_params(1.0, 0.1, 0.04);
+	mRP->run_pid(0, 40, 650);
+	ev3_speaker_play_tone(NOTE_AS4, 300);
+	// 第3コーナー
+	mRP->set_pid_params(2.5, 0.05, 0.06);
+	mRP->run_pid(0, 40, 750);
+        // 直進4
+        mRP->set_pid_params(1.0, 0.1, 0.09);
+	mRP->run_pid(0, 50, 200);
+	mRP->set_pid_params(1.0, 0.1, 0.09);
+	mRP->run_pid(0, 60, 2300);
+        //ゴール後
+        mRP->set_pid_params(1.7, 0.00, 0.1);
+	mRP->run_pid(0, 40, 600);
 }
 
 void Scenario::RGB2HSV(void){
