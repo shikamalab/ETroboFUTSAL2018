@@ -219,11 +219,6 @@ void drive_task(intptr_t exinf)
             break;
         }
         else if (mode == 1) {           // L Course
-            gB_area->test2(gBT->get_bt());
-            ev3_speaker_play_tone(NOTE_F5, 300);
-            while(1){
-                if (touchSensor->isPressed()) break; // タッチセンサが押された
-            }
             gScenario->L();
             break;
         }
