@@ -130,8 +130,8 @@ void HSV::Convert(int mode, bool flag_NEO) {
     //     color = ERROR;
 
     // 色測定用
-    if (++count > 4000)
-        color = ERROR;
+    //if (++count > 4000)
+    //    color = ERROR;
 }
 
 void HSV::Disp(void){
