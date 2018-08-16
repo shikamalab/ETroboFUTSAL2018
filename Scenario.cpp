@@ -1,9 +1,6 @@
 ﻿#include "Scenario.h"
 using namespace ev3api;
-
-extern int selected_result;
-extern Result result[24];
-
+extern Result result[10];
 extern int wait_event(void);
 //extern	EvLog*	elog;
 
@@ -329,43 +326,40 @@ void Scenario::RGB2HSV(void){
 }
 
 void Scenario::TEST(void){
-    mRP->set_pid_params(0.00, 0.02, 0.0);
-    mRP->run_pid(0, 30, 50);
+    // スタート
+    mRP->set_pid_params(0.00, 0.01, 0.0);
+    mRP->run_pid(0, 20, 50);
+    //mRP->move(30, 0, 150);
     
-   mRP->set_pid_params(2.25, 0.03, 0.12); //mRP->set_pid_params(1.45, 0.01, 0.08);
-    mRP->run_pid(0, 75, 2000);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    // カーブ1
-    mRP->set_pid_params(3.1, 0.03, 0.103);
-    mRP->run_pid(0, 70, 1820);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    //直進2
-    mRP->set_pid_params(2.5, 0.03, 0.1);
-    mRP->run_pid(0, 70, 450);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    // カーブ2
-    mRP->set_pid_params(1.6, 0.03, 0.13);
-    mRP->run_pid(0, 65, 550);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    //カーブ3
-    mRP->set_pid_params(2.15, 0.03, 0.13);
-    mRP->run_pid(0, 65, 650);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    //直進3
-    mRP->set_pid_params(1.5, 0.01, 0.05);
-    mRP->run_pid(0, 70, 700);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    // カーブ4
-    //mRP->reset_pid_params();
-    mRP->set_pid_params(2.15, 0.03, 0.13);
-    mRP->run_pid(0, 65, 1200);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    //直進3
-    mRP->set_pid_params(1.45, 0.01, 0.08);
-    mRP->run_pid(0, 70, 2700);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    }
+   
+    //mRP->SetArmAngle(80, -20); //-20
+    mRP->set_pid_params(0.6, 0.1, 0.3);
+    mRP->run_pid(0, 30, 150);//150
+    
 
+    mRP->ColorDetect(0);
+    mRP->Turn(-90);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->ColorDetect(0);
+    mRP->Turn(90);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->ColorDetect(0);
+    mRP->Turn(90);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->ColorDetect(0);
+    mRP->Turn(90);
+   ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->ColorDetect(0);
+    //mRP->Turn(-120);
+    //mRP->ColorDetect(0);
+    ///mRP->Turn(-60);
+    //while(1){
+    //mRP->ColorDetect(0);
+    //mRP->Turn(-120);
+    //mRP->ColorDetect(0);
+    //mRP->Turn(-60);
+    //}
+}
 
 void Scenario::DoPuzzle(){
     mRP->reset_pid_params();
@@ -380,8 +374,7 @@ void Scenario::DoPuzzle(){
 
     //入口選択
 //    block_ptn = mBArea->select(10000);
-//    block_ptn = mBArea->select();
-	  block_ptn = selected_result;
+    block_ptn = mBArea->select();
 
     //配列の2番目から入るリングを取得
     if (result[block_ptn].orders[1] == 10){
