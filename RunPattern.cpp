@@ -1,4 +1,4 @@
-﻿#include "RunPattern.h"
+#include "RunPattern.h"
 #include <stdlib.h>
 extern int wait_event(void);
 
@@ -241,14 +241,14 @@ void RunPattern::TurnR90(){
 	int startAngle = mRloc->omega_d;
 	while(1){
 		move(4, 25);//3,17 or 4,25
-		if((mRloc->omega_d - startAngle) >= 96 ){	//93yoyu-
+		if((mRloc->omega_d - startAngle) >= 94 ){	//93yoyu-
 			break;
 		}
 	}
 }
 
 void RunPattern::TurnL90(){
-	int startAngle = mRloc->omega_d - 96;	// 誤差調整
+	int startAngle = mRloc->omega_d - 95;	// 誤差調整
 	while(1){
 		move(-4, -25);//-3,-17 or -4,-25
 		if((mRloc->omega_d - startAngle) <= 0 ){
@@ -258,7 +258,7 @@ void RunPattern::TurnL90(){
 }
 
 void RunPattern::TurnL80(){
-	int startAngle = mRloc->omega_d - 84;	// 誤差調整
+	int startAngle = mRloc->omega_d - 83;	// 誤差調整
 	while(1){
 		move(-4, -25);//-3,-17 or -4,-25
 		if((mRloc->omega_d - startAngle) <= 0 ){
@@ -271,14 +271,14 @@ void RunPattern::TurnR180(){
 	int startAngle = mRloc->omega_d;
 	while(1){
 		move(4, 25);//3,17 or 4,25
-		if((mRloc->omega_d - startAngle) >= 192 ){	//93yoyu-
+		if((mRloc->omega_d - startAngle) >= 188 ){	//93yoyu-
 			break;
 		}
 	}
 }
 
 void RunPattern::TurnL180(){
-	int startAngle = mRloc->omega_d - 192;	// 誤差調整
+	int startAngle = mRloc->omega_d - 189;	// 誤差調整
 	while(1){
 		move(-4, -25);//-3,-17 or -4,-25
 		if((mRloc->omega_d - startAngle) <= 0 ){
@@ -292,28 +292,28 @@ void RunPattern::TurnR(int angle){
 	// angle = angle * 1.1;	//誤差調整1.10
 	switch(angle){
 		case 30:
-			angle = 26;	//31
+			angle = 25;	//31
 			break;
 		case 45:
-			angle = 41;	//46
+			angle = 40;	//46
 			break;
 		case 60:
 			angle = 56;	//62
 			break;
 		case 90:
-			angle = 90;	//93
+			angle = 88;	//93
 			break;
 		case 120:
-			angle = 122;	//124
+			angle = 120;	//124
 			break;
 		case 135:
 			angle = 137;	//137
 			break;
 		case 150:
-			angle = 156;	//155
+			angle = 155;	//155
 			break;
 		case 180:
-			angle = 192;	//188
+			angle = 188;	//188
 			break;
 		default:
 			angle = angle * 89 / 90;
@@ -500,11 +500,11 @@ void RunPattern::ColorDetect(int line){
 	int color;
 	// double start_dist = mRloc->distance;
 
-	run_pid(9, 20, 50);	//edge, forward, distance
+	run_pid(9, 30, 68);	//edge, forward, distance (9,30,65) (9,35,82)
 	m_sum_angle = mRloc->omega_d;
 	while (1) {
 		if (state == 0) {
-			line == 1 ? move(20, 0) : run_pid(9, 20);//20
+			line == 1 ? move(30, 0) : run_pid(9, 30);//20
 			//run_onoff_r(19);//20
 			color = mHSV->GetColorNumber();
 			//100mm手前に来るまで色を読まない
@@ -1143,16 +1143,6 @@ int RunPattern::RGB2HSV(void){
 		}
 	}
 	return mHSV->GetColorNumber();
-}
-
-void RunPattern::run_hsv(void){
-	int color;
-	while(1){
-		move(20,0);
-		color = mHSV->GetColorNumber();
-		if(color == 3) break;
-	}
-
 }
 
 void RunPattern::RailDetect(int area, int dist){
