@@ -187,8 +187,8 @@ void RunPattern::run_pid(int forward_value){
 void RunPattern::run_pid(int edge, int forward_value){
 	forward = forward_value;
 	int err = mHSV->GetValue() - (LIGHT_WHITE + LIGHT_BLACK)/2;
-	if (edge & 0b00000010) {err = mHSV->GetValue() - (LIGHT_GRAY + LIGHT_BLACK)/2;}		//これじゃなくて
-	// if (edge & 0b00000010) {err = mHSV->GetValue() - (LIGHT_GRAY + LIGHT_WHITE)/2;}	//これにしたい
+	// if (edge & 0b00000010) {err = mHSV->GetValue() - (LIGHT_GRAY + LIGHT_BLACK)/2;}		//これじゃなくて
+	if (edge & 0b00000010) {err = mHSV->GetValue() - (LIGHT_GRAY + LIGHT_WHITE)/2;}	//これにしたい
 	if (edge & 0b00000100) {err = mHSV->GetValue() - (LIGHT_WOOD + LIGHT_BLACK)/2;}
 	if (edge & 0b00001000) {err = mHSV->GetValue() - (LIGHT_WHITE_BLOCK + LIGHT_BLACK)/2;}
 	if (edge & 0b00010000) {err = mHSV->GetValue() - (LIGHT_WHITE_BLOCK + LIGHT_GRAY_BLOCK)/2;}
@@ -492,6 +492,26 @@ void RunPattern::TurnWithBlock(int angle){
 		TurnRWithBlock(-angle);
 
 
+}
+
+void RunPattern::TurnCheck(void){
+	colorflag = 0;
+	int startAngle = mRloc->omega_d - 36;	// 誤差調整
+	while(1){
+		move(-3, -17);//-3,-17 or -4,-25
+		if((mRloc->omega_d - startAngle) <= 0 ){
+			break;
+		}
+	}
+	if(mHSV->GetColorNumber() == 0) colorflag = 1;
+	startAngle = mRloc->omega_d;
+	while(1){
+		move(3, 17);//3,17 or 4,25
+		if((mRloc->omega_d - startAngle) >= 40 ){
+			break;
+		}
+	}
+	ev3_speaker_play_tone(NOTE_A4, 300);
 }
 
 void RunPattern::ColorDetect(int line){
@@ -1030,6 +1050,145 @@ void RunPattern::AcrossTheLine(int area, int dist){
 	}
 }
 
+void RunPattern::DigitalAns(){
+	int state = 0;
+	int count = 0;
+	int color;
+	int flag = 0;
+	int start_dist = mRloc->distance;
+	while(1){
+		if(state == 0){//1番チェック
+			move(-20, 0);
+			if(mHSV->GetColorNumber() == 1){
+				flag = 1;
+			}
+			if(start_dist - mRloc->distance >= CENTER_DISTANCE ){//見つからなかった
+				start_dist = mRloc->distance;
+				if(flag == 0){//見つからなかった
+					state = 1;
+				}
+				else if(flag == 1){//見つけた
+					state = 3;
+				}
+			}
+
+		}
+		if(state == 1){//３番チェック
+			move(20, 0);
+			if(mRloc->distance - start_dist >= CENTER_DISTANCE && flag == 0){
+				color = mHSV->GetColorNumber();
+				if(color == 1){
+					flag = 1;
+				}
+			}
+			if(mRloc->distance - start_dist >= 200){
+				if(flag == 0){//見つからなかった
+					Digital = 1;
+				}
+				else if(flag == 1){//見つけた
+					Digital = 4;
+				}
+				state = 2;
+			}
+		}
+		if(state == 2){
+			TurnR90();
+			move(20, 0, CENTER_DISTANCE);
+			break;
+		}
+		if(state == 3){//位置戻し
+			move(20, 0);
+			if(mRloc->distance - start_dist >= CENTER_DISTANCE + 30){
+				TurnR90();
+				start_dist = mRloc->distance;
+				state = 4;
+			}
+		}
+		if(state == 4){//２番チェック
+			move(20, 0);
+			color = mHSV->GetColorNumber();
+			if(color == 1){
+				flag = 1;
+			}
+			if(mRloc->distance - start_dist >= CENTER_DISTANCE){
+				state = 5;
+			}
+		}
+		if(state == 5){//位置戻し
+			move(-20, 0, CENTER_DISTANCE);
+			TurnL90();
+			start_dist = mRloc->distance;
+			state = 6;
+		}
+		if(state == 6){//3番チェック
+			move(20, 0);
+			color = mHSV->GetColorNumber();
+			if(color == 1){
+				count = 1;
+			}
+			if(mRloc->distance - start_dist >= CENTER_DISTANCE){
+				start_dist = mRloc->distance;
+				if(flag == 0){
+					if(count == 0){//２番なし　３番なし
+						Digital = 7;
+						state = 2;
+					}
+					else if(count ==1){//２番なし　３番あり
+						TurnR90();
+						flag = 0;
+						state = 6;
+					}
+				}
+				else if(flag == 1){
+					if(count == 0){//２番あり　３番なし
+						Digital = 0;
+						state = 2;
+					}
+					else if(count ==1){//２番あり　３番あり
+						TurnR90();
+						flag = 0;
+						state = 7;
+					}
+				}
+			}
+		}
+		if(state == 6){//４番チェック・・・１
+			move(20, 0);
+			color = mHSV->GetColorNumber();
+			if(color == 1){
+				flag = 1;
+			}
+			if(mRloc->distance - start_dist >= CENTER_DISTANCE){
+				if(flag == 0){//見つからなかった
+					Digital = 3;
+					break;
+				}
+				else if(flag == 1){//見つけた
+					Digital = 2;
+					break;
+				}
+			}
+		}
+		if(state == 7){
+			move(20, 0);
+			color = mHSV->GetColorNumber();
+			if(color == 1){
+				flag = 1;
+			}
+			if(mRloc->distance - start_dist >= CENTER_DISTANCE && flag == 0){
+				if(flag == 0){//見つからなかった
+					Digital = 5;
+					break;
+				}
+				else if(flag == 1){//見つけた
+					Digital = 6;
+					break;
+				}
+			}
+		}
+	}
+}
+
 void RunPattern::banzai(){
 	mMotorControl->wheels_reset();
 	while (count++ < 100){
@@ -1147,12 +1306,24 @@ int RunPattern::RGB2HSV(void){
 
 void RunPattern::run_hsv(void){
 	int color;
+	int count =0;
 	while(1){
-		move(20,0);
+		move(15,0);
 		color = mHSV->GetColorNumber();
-		if(color == 3) break;
+		if(color == 3){
+			if(count++ > 5) break;
+		}
 	}
-
+	count = 0;
+	ev3_speaker_play_tone(NOTE_A4, 300);
+	while(1){
+		move(15,0);
+		color = mHSV->GetColorNumber();
+		if(color == 0){
+			if(count++ > 1) break;
+		}
+	}
+	mHSV->Convert(3, flag_NEO);
 }
 
 void RunPattern::RailDetect(int area, int dist){
