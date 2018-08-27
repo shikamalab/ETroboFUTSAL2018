@@ -6,7 +6,7 @@
 #include <string.h>
 #include <syssvc/serial.h>
 #include "TouchSensor.h"
-// #include "SonarSensor.h" unnti
+// #include "SonarSensor.h"
 //#include "ColorSensor.h"
 #include "GyroSensor.h"
 #include "Motor.h"
@@ -219,6 +219,13 @@ void drive_task(intptr_t exinf)
             break;
         }
         else if (mode == 1) {           // L Course
+            //gUI->InputCode();
+            gB_area->ttest(gUI->InputCode());
+            //gB_area->test2(gBT->get_bt());
+            ev3_speaker_play_tone(NOTE_F5, 300);
+            while(1){
+                if (touchSensor->isPressed()) break; // タッチセンサが押された
+            }
             gScenario->L();
             break;
         }
@@ -299,7 +306,7 @@ void bt_task(intptr_t unused) {
 // 概要 : 超音波センサ読み出しとリセットを定期的に行うタスク
 //*****************************************************************************
 void ultrasonic_task(intptr_t unused) {
-    char sonar[18];
+    char sonar[20];
     slp_tsk();
     while (1) {
         // 25ms毎に超音波測距

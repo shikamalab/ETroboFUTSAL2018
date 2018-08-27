@@ -6,15 +6,12 @@
 #include "HSV.h"
 
 HSV::HSV(ePortS port) : ev3api::ColorSensor(port) {
-    max = 0; min = 0; count = 0; color = WHITE, colorid = 0;
+    max = 0; min = 0; count = 0; color = WHITE;
 }
 
 void HSV::Convert(int mode, bool flag_NEO) {
     // 反射光の強さ
     // v = this->getBrightness();
-
-    // カラー番号（API）取得
-    // colorid = this->getColorNumber();
 
     // 生の値取得
     this->getRawColor(rgb_val);
@@ -81,17 +78,17 @@ void HSV::Convert(int mode, bool flag_NEO) {
     }
     else{
         // モデル色判定
-        if (v < 5)    color = BLACK;
+        if (v < 10)    color = BLACK;
         else{
-            if (s < 35) color = WHITE;
-            else if (s < 45 && v < 40)    color = GRAY; //v25
+            if (s < 25) color = WHITE;
+            else if (s < 45 && v < 25)    color = GRAY;
             else{
                 if (h > 330 || h < 30)    color = RED;
                 else if (h < 80){
                     if (s > 65) color = YELLOW;
                     else        color = WOOD;
                 }
-                else if (h < 160) color = GREEN;
+                else if (h < 150) color = GREEN;
                 else color = BLUE;
             }
         }
@@ -120,18 +117,18 @@ void HSV::Convert(int mode, bool flag_NEO) {
     // }
 
     // 転倒判定
-    // if (s == 100 && v == 0)
-    //     count++;
-    // else {
-    //     if (count > 0) count--;
-    // }
+    if (s == 100 && v == 0)
+        count++;
+    else {
+        if (count > 0) count--;
+    }
 
-    // if (count > 1000 && !flag_NEO && mode != 2)
-    //     color = ERROR;
+    if (count > 1000 && !flag_NEO && mode != 2)
+        color = ERROR;
 
     // 色測定用
-    //if (++count > 4000)
-    //    color = ERROR;
+    // if (++count > 2000)
+    //     color = ERROR;
 }
 
 void HSV::Disp(void){
@@ -166,16 +163,5 @@ void HSV::Disp(void){
         case 6: ev3_lcd_draw_string("WOOD  ",100,60);break;
         case 7: ev3_lcd_draw_string("GRAY  ",100,60);break;
         default:ev3_lcd_draw_string("ERROR ",100,60);
-    }
-
-    switch(colorid){
-        case 1: ev3_lcd_draw_string("BLACK ",100,40);break;
-        case 2: ev3_lcd_draw_string("BLUE  ",100,40);break;
-        case 3: ev3_lcd_draw_string("GREEN ",100,40);break;
-        case 4: ev3_lcd_draw_string("YELLOW",100,40);break;
-        case 5: ev3_lcd_draw_string("RED   ",100,40);break;
-        case 6: ev3_lcd_draw_string("WHITE ",100,40);break;
-        case 7: ev3_lcd_draw_string("BROWN ",100,40);break;
-        default:ev3_lcd_draw_string("NONE  ",100,40);
     }
 }
