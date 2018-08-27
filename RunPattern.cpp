@@ -463,8 +463,8 @@ void RunPattern::Turn(int angle){
 
 	while((mRloc->distance - start_dist) <= dist){//68
 		err = mRloc->omega_d - m_sum_angle;
-		if (err > 0) move(25, -2);//15
-		else move(25, 2);//15
+		if (err > 0) move(5, -2);//15
+		else move(5, 2);//15
 	}
 	if (angle > 0){
 		TurnL(angle);
@@ -520,11 +520,11 @@ void RunPattern::ColorDetect(int line){
 	int color;
 	// double start_dist = mRloc->distance;
 
-	run_pid(9, 20, 50);	//edge, forward, distance
+	run_pid(9, 10, 50);	//edge, forward, distance
 	m_sum_angle = mRloc->omega_d;
 	while (1) {
 		if (state == 0) {
-			line == 1 ? move(20, 0) : run_pid(9, 20);//20
+			line == 1 ? move(10, 0) : run_pid(9, 10);//20
 			//run_onoff_r(19);//20
 			color = mHSV->GetColorNumber();
 			//100mm手前に来るまで色を読まない
