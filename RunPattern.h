@@ -6,7 +6,7 @@ extern "C" {
 #define RUNPATTERN_H_
 
 
-#define LIGHT_WHITE_BLOCK	30
+#define LIGHT_WHITE_BLOCK	25
 #define LIGHT_GRAY_BLOCK	15
 // これにしたい
 #define LIGHT_WHITE		24
