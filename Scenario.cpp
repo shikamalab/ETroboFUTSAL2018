@@ -15,247 +15,252 @@ void Scenario::R(){
     mRP->setStartTime();
     // Rコース
     // スタート
-    mRP->set_pid_params(0.00, 0.02, 0.0);
-    mRP->run_pid(1, 30, 150);
+    mRP->set_pid_params(0.00, 0.005, 0.0);
+    mRP->run_pid(0, 30, 50);
 
     // for CS
     // // 直進1
-    mRP->set_pid_params(2.4, 0.16, 0.004);
-    mRP->run_pid(1, 80, 1950);
+     mRP->set_pid_params(1.0, 0.03, 0.09); //(1.4, 0.01, 0.05)
+    mRP->run_pid(0, 60, 2000);
     ev3_speaker_play_tone(NOTE_A4, 300);
     // カーブ1
-    mRP->set_pid_params(2.4, 0.03, 0.12);
-    mRP->run_pid(1, 75, 3300);
-    mRP->set_pid_params(3.4, 0.0, 0.1);
-    mRP->run_pid(1, 60, 400);
+    mRP->set_pid_params(1.6, 0.03, 0.15);
+    mRP->run_pid(0, 55, 1820);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    //直進2
+    mRP->set_pid_params(1.0, 0.03, 0.075); //1.3, 0.01, 0.05
+    mRP->run_pid(0, 55, 450);
     ev3_speaker_play_tone(NOTE_A4, 300);
     // カーブ2
-    mRP->set_pid_params(2.45, 0.0025, 0.1);
-    mRP->run_pid(1, 45, 1500);
-    // mRP->set_pid_params(3.6, 0.04, 0.02);
-    // mRP->run_pid(1, 50, 1500);
-    mRP->set_pid_params(2.0, 0.04, 0.12);
-    mRP->run_pid(1, 70, 1300);
+    mRP->set_pid_params(1.6, 0.03, 0.13);
+    mRP->run_pid(0, 45, 550);
     ev3_speaker_play_tone(NOTE_A4, 300);
-    // 直進2
-    mRP->reset_pid_params();
-    mRP->set_pid_params(2.4, 0.12, 0.008);
-    // mRP->run_pid(1, 80, 1580);   // 試走会にて20cmオーバー
-    mRP->run_pid(1, 80, 1500);
+    //カーブ3
+    mRP->set_pid_params(2.05, 0.03, 0.13);
+    mRP->run_pid(0, 45, 650);
     ev3_speaker_play_tone(NOTE_A4, 300);
-    mRP->set_pid_params(0.0, 0.5, 0.0);
-    mRP->run_pid(3, 45, 200);
-    // カーブ3
-    mRP->set_pid_params(2.4, 0.0, 0.1);
-    // mRP->run_pid(1, 40, 1320);   // 試走会にて数cmオーバー
-    mRP->run_pid(1, 40, 1200);
-    mRP->set_pid_params(0.5, 0.05, 0.1);
+    //直進3
+    mRP->set_pid_params(1.0, 0.03, 0.075); //1.3, 0.01, 0.05
+    mRP->run_pid(0, 50, 700);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    // カーブ4
+    //mRP->reset_pid_params();
+    mRP->set_pid_params(1.8, 0.03, 0.13);
+    mRP->run_pid(0, 45, 1200);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    //直進4
+    mRP->set_pid_params(1.0, 0.03, 0.075); //1.3, 0.01, 0.05
+    mRP->run_pid(0, 50, 2800);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->set_pid_params(1.0, 0.03, 0.075); //1.3, 0.01, 0.05
+    mRP->run_pid(0, 40, 500);
+
 
 
     // ET相撲NEO
-    mRP->flag_NEO = true;
+   // mRP->flag_NEO = true;
 
-    mRP->eyesight(30);
-    mRP->AcrossTheLine(0, 258);
-    mRP->TurnR90();
+    // mRP->eyesight(30);
+   // mRP->AcrossTheLine(0, 258);
+    // mRP->TurnR90();
 
     // 1
-    switch (mRP->RingDetect()) {
-        case 0: // 押出
-            mRP->move(30, 0, 100);
-            mRP->move(-30, 1.95, 150);
-            mRP->TurnR180();
-            break;
-        case 1: // ブロックの色を読まず押出
-            mRP->move(30, 0, 87);
-            mRP->move(-30, 1.95, 160);
-            mRP->TurnR180();
-            break;
-        case 2: // ブロックの色を読まず寄切
-        default:// 寄切
-            mRP->SetTailAngle(60, -50);
-            mRP->TurnR180();
-            mRP->move(30, 0.5, 30);
-            mRP->SetTailAngle(60, 50);
-            break;
-    }
+    // switch (mRP->RingDetect()) {
+        // case 0: // 押出
+            // mRP->move(30, 0, 100);
+           // / mRP->move(-30, 1.95, 150);
+            // mRP->TurnR180();
+          //  break;
+        // case 1: // ブロックの色を読まず押出
+            // mRP->move(30, 0, 87);
+            // mRP->move(-30, 1.95, 160);
+            // mRP->TurnR180();
+            // break;
+        // case 2: // ブロックの色を読まず寄切
+        // default:// 寄切
+            // mRP->SetTailAngle(60, -50);
+            // mRP->TurnR180();
+            // mRP->move(30, 0.5, 30);
+            // mRP->SetTailAngle(60, 50);
+            // break;
+    // }
     // 2
-    switch (mRP->RingDetect()) {
-        case 0: // 押出
-            mRP->move(30, 0, 100);
-            mRP->move(-30, 0, 175);
-            mRP->TurnR90();
-            break;
-        case 1: // ブロックの色を読まず押出
-            mRP->move(30, 0, 90);
-            mRP->move(-30, 0, 175);
-            mRP->TurnR90();
-            break;
-        case 2: // ブロックの色を読まず寄切
-        default:// 寄切
-            mRP->move(30, 0, 10);
-            mRP->TurnL180();
-            mRP->move(30, 0, 95);
-            mRP->TurnL80();
-            break;
-    }
-
-    mRP->run_pid(4, 35, 284);
-    mRP->TurnR90();
+    // switch (mRP->RingDetect()) {
+        // case 0: // 押出
+            // mRP->move(30, 0, 100);
+            // mRP->move(-30, 0, 175);
+            // mRP->TurnR90();
+            // break;
+        // case 1: // ブロックの色を読まず押出
+            // mRP->move(30, 0, 90);
+            // mRP->move(-30, 0, 175);
+            // mRP->TurnR90();
+            // break;
+        // case 2: // ブロックの色を読まず寄切
+        // default:// 寄切
+            // mRP->move(30, 0, 10);
+            // mRP->TurnL180();
+            // mRP->move(30, 0, 95);
+            // mRP->TurnL80();
+    //         break;
+    // // }
+    //mRP->run_pid(4, 35, 284);
+    // mRP->TurnR90();
 
     // 3
-    switch (mRP->RingDetect()) {
-        case 0: // 押出
-            mRP->move(30, 0, 100);
-            mRP->move(-30, 0.0, 150);
-            mRP->TurnL180();
-            break;
-        case 1: // ブロックの色を読まず押出
-            mRP->move(30, 0, 90);
-            mRP->move(-30, 1.8, 160);
-            mRP->TurnL180();
-            break;
-        case 2: // ブロックの色を読まず寄切
-        default:// 寄切
-            mRP->SetTailAngle(60, -115);
-            mRP->TurnL180();
-            mRP->move(30, 2.2, 30);
-            mRP->SetTailAngle(60, 115);
-            break;
-    }
+    // switch (mRP->RingDetect()) {
+        // case 0: // 押出
+            // mRP->move(30, 0, 100);
+            // mRP->move(-30, 0.0, 150);
+            // mRP->TurnL180();
+            // break;
+        // case 1: // ブロックの色を読まず押出
+            // mRP->move(30, 0, 90);
+            // mRP->move(-30, 1.8, 160);
+            // mRP->TurnL180();
+            // break;
+        // case 2: // ブロックの色を読まず寄切
+        // default:// 寄切
+            // mRP->SetTailAngle(60, -115);
+            // mRP->TurnL180();
+            // mRP->move(30, 2.2, 30);
+            // mRP->SetTailAngle(60, 115);
+            // break;
+    // }
     // 4
-    switch (mRP->RingDetect()) {
-        case 0: // 押出
-            mRP->move(30, 0, 100);
-            mRP->move(-30, 0, 160);
-            mRP->TurnR90();
-            mRP->move(-10, -0.2, 15);
-            break;
-        case 1: // ブロックの色を読まず押出
-            mRP->move(30, 0, 90);
-            mRP->move(-30, 0, 170);
-            mRP->TurnR90();
-            mRP->move(-10, -0.2, 15);
-            break;
-        case 2: // ブロックの色を読まず寄切
-        default:// 寄切
-            mRP->SetTailAngle(60, -35);
-            mRP->TurnR180();
-            mRP->move(30, 0, 75);
-            mRP->TurnL90();
-            mRP->move(-10,-0.2, 15);
-            mRP->SetTailAngle(60, 35);
-            break;
-    }
+    // switch (mRP->RingDetect()) {
+        // case 0: // 押出
+            // mRP->move(30, 0, 100);
+            // mRP->move(-30, 0, 160);
+            // mRP->TurnR90();
+            // mRP->move(-10, -0.2, 15);
+            // break;
+        // case 1: // ブロックの色を読まず押出
+            // mRP->move(30, 0, 90);
+            // mRP->move(-30, 0, 170);
+            // mRP->TurnR90();
+         //   mRP->move(-10, -0.2, 15);
+            // break;
+        // case 2: // ブロックの色を読まず寄切
+        // default:// 寄切
+            // mRP->SetTailAngle(60, -35);
+            // mRP->TurnR180();
+            // mRP->move(30, 0, 75);
+            // mRP->TurnL90();
+            // mRP->move(-10,-0.2, 15);
+            // mRP->SetTailAngle(60, 35);
+            // break;
+    // }
 
     // 線路跨ぎ
-    mRP->eyesight(30);
-    mRP->AcrossTheLine(1, 260);
-    mRP->TurnR90();
+    // mRP->eyesight(30);
+    // mRP->AcrossTheLine(1, 260);
+    // mRP->TurnR90();
 
     // 5
-    switch (mRP->RingDetect()) {
-        case 0: // 押出
-            mRP->move(30, 0, 100);
-            mRP->move(-30, 1.95, 155);
-            mRP->TurnR180();
-            break;
-        case 1: // ブロックの色を読まず押出
-            mRP->move(30, 0, 90);
-            mRP->move(-30, 1.95, 165);
-            mRP->TurnR180();
-            break;
-        case 2: // ブロックの色を読まず寄切
-        default:// 寄切
-            mRP->SetTailAngle(60, -50);
-            mRP->TurnR180();
-            mRP->move(30, -1.5, 35);
-            mRP->SetTailAngle(60, 50);
-            break;
-    }
+    // switch (mRP->RingDetect()) {
+        // case 0: // 押出
+            // mRP->move(30, 0, 100);
+            // mRP->move(-30, 1.95, 155);
+            // mRP->TurnR180();
+            // break;
+        // case 1: // ブロックの色を読まず押出
+            // mRP->move(30, 0, 90);
+            // mRP->move(-30, 1.95, 165);
+            // mRP->TurnR180();
+            // break;
+        // case 2: // ブロックの色を読まず寄切
+        // default:// 寄切
+        
+    // mRP->SetTailAngle(60, -50);
+            // mRP->TurnR180();
+            // mRP->move(30, -1.5, 35);
+            // mRP->SetTailAngle(60, 50);
+            // break;
+    // }
     // 6
-    switch (mRP->RingDetect()) {
-        case 0: // 押出
-            mRP->move(30, 0, 100);
-            mRP->move(-30, 0, 175);
-            mRP->TurnR90();
-            break;
-        case 1: // ブロックの色を読まず押出
-            mRP->move(30, 0, 90);
-            mRP->move(-30, 0, 175);
-            mRP->TurnR90();
-            break;
-        case 2: // ブロックの色を読まず寄切
-        default:// 寄切
-            mRP->move(30, 0, 10);
-            mRP->TurnL180();
-            mRP->move(30, 0, 95);
-            mRP->TurnL80();
-            break;
-    }
+    // switch (mRP->RingDetect()) {
+        // case 0: // 押出
+            // mRP->move(30, 0, 100);
+            // mRP->move(-30, 0, 175);
+            // mRP->TurnR90();
+            // break;
+        // case 1: // ブロックの色を読まず押出
+            // mRP->move(30, 0, 90);
+            // mRP->move(-30, 0, 175);
+            // mRP->TurnR90();
+            // break;
+        // case 2: // ブロックの色を読まず寄切
+        // default:// 寄切
+            // mRP->move(30, 0, 10);
+            // mRP->TurnL180();
+            // mRP->move(30, 0, 95);
+            // mRP->TurnL80();
+            // break;
+    // }
 
-    mRP->run_pid(4, 35, 284);
-    mRP->TurnR90();
+    // mRP->run_pid(4, 35, 284);
+    // mRP->TurnR90();
 
     // 7
-    switch (mRP->RingDetect()) {
-        case 0: // 押出
-            mRP->move(30, 0, 100);
-            mRP->move(-30, 0, 150);
-            mRP->TurnL180();
-            break;
-        case 1: // ブロックの色を読まず押出
-            mRP->move(30, 0, 80);
-            mRP->move(-30, 1.8, 150);
-            mRP->TurnL180();
-            break;
-        case 2: // ブロックの色を読まず寄切
-        default:// 寄切
-            mRP->SetTailAngle(60, -115);
-            mRP->TurnL180();
-            mRP->move(30, 2.2, 30);
-            mRP->SetTailAngle(60, 115);
-            break;
-    }
+    // switch (mRP->RingDetect()) {
+        // case 0: // 押出
+            // mRP->move(30, 0, 100);
+            // mRP->move(-30, 0, 150);
+            // mRP->TurnL180();
+            // break;
+        // case 1: // ブロックの色を読まず押出
+            // mRP->move(30, 0, 80);
+            // mRP->move(-30, 1.8, 150);
+            // mRP->TurnL180();
+            // break;
+        // case 2: // ブロックの色を読まず寄切
+        // default:// 寄切
+            // mRP->SetTailAngle(60, -115);
+           // mRP->TurnL180();
+            // mRP->move(30, 2.2, 30);
+            // mRP->SetTailAngle(60, 115);
+            // break;
+    // }
     // 8
-    switch (mRP->RingDetect()) {
-        case 0: // 押出
-            mRP->move(30, 0, 100);
-            mRP->move(-30, 0, 160);
-            mRP->TurnR90();
-            mRP->move(-10, -1.0, 35);
-            break;
-        case 1: // ブロックの色を読まず押出
-            mRP->move(30, 0, 95);
-            mRP->move(-30, 0, 155);
-            mRP->TurnR90();
-            mRP->move(-10, -1.0, 35);
-            break;
-        case 2: // ブロックの色を読まず寄切
-        default:// 寄切
-            mRP->SetTailAngle(60, -35);
-            mRP->TurnR180();
-            mRP->move(30, 0, 80);
-            mRP->TurnL90();
-            mRP->move(-10, 1.5, 10);
-            mRP->SetTailAngle(60, 35);
-            break;
-    }
+    // switch (mRP->RingDetect()) {
+        // case 0: // 押出
+            // mRP->move(30, 0, 100);
+            // mRP->move(-30, 0, 160);
+            // mRP->TurnR90();
+            // mRP->move(-10, -1.0, 35);
+            // break;
+        // case 1: // ブロックの色を読まず押出
+            // mRP->move(30, 0, 95);
+           // mRP->move(-30, 0, 155);
+            // mRP->TurnR90();
+            // mRP->move(-10, -1.0, 35);
+            // break;
+        // case 2: // ブロックの色を読まず寄切
+        // default:// 寄切
+            // mRP->SetTailAngle(60, -35);
+            // mRP->TurnR180();
+            // mRP->move(30, 0, 80);
+            // mRP->TurnL90();
+            // mRP->move(-10, 1.5, 10);
+            // mRP->SetTailAngle(60, 35);
+            // break;
+    // }
 
     // 懸賞
     // mRP->KenShow();
 
-    mRP->eyesight(30);
-    mRP->AcrossTheLine(2, 100);
+    // mRP->eyesight(30);
+    // mRP->AcrossTheLine(2, 100);
 
-    mRP->flag_NEO = false;
-    mRP->reset_pid_params();
-    mRP->run_pid(0, 30, 200);
-    mRP->run_pid(0, 45, 250);
-    mRP->TurnR(85);
-    mRP->run_pid(1, 45, 430);
-    mRP->banzai();
-}
+    // mRP->flag_NEO = false;
+    // mRP->reset_pid_params();
+    // mRP->run_pid(0, 30, 200);
+    // mRP->run_pid(0, 45, 250);
+    // mRP->TurnR(85);
+    // mRP->run_pid(1, 45, 430);
+    // mRP->banzai();
+ }
 
 void Scenario::L(){
     //b_area->test2(gBT->get_bt());
@@ -264,53 +269,43 @@ void Scenario::L(){
     //mRP->TurnR(90);
 
 
-	mRP->set_pid_params(0.0, 0.0, 0.0);
-	mRP->run_pid(0, 30, 100);
-	// 直進1
-	mRP->set_pid_params(0.6, 0.1, 0.05);
-	mRP->run_pid(0, 61, 1950);//60
-	// 第１コーナー
-	mRP->set_pid_params(1.8, 0.00, 0.1);
-	mRP->run_pid(0, 44, 1850);
-    // 第２コーナー
-	mRP->set_pid_params(1.6, 0.01, 0.1);
-	mRP->run_pid(0, 55, 3000);	//速度余裕有
-
-
-    // 第３コーナー
-	mRP->set_pid_params(1.6, 0.00, 0.1);
-	mRP->run_pid(0, 43, 500);
-	// 第4コーナー
-    mRP->set_pid_params(1.6, 0.00, 0.1);
-	mRP->run_pid(0, 44, 1100);//44
-
-	// 直進2
-    mRP->reset_pid_params();
-    //mRP->set_pid_params(2.2, 1.8, 0.05);
-    //mRP->run_pid(1, 80, 1500);
-	mRP->set_pid_params(0.6, 0.1, 0.05);
-	mRP->run_pid(0, 61, 1500);// 60, 1300
-    //試走会にて200mmオーバー
-
-    mRP->move(30, 2, 100);
-    //灰色
-    //mRP->set_pid_params(0.0, 0.0, 0.0);
-    //mRP->run_pid(0, 35, 200);
-    //エッジ切り替え1,40
-    //mRP->run_pid(1, 20, 100);
-
-    
-    //Reset PID
-    mRP->reset_pid_params();
-    mRP->set_pid_params(0.6, 0.1, 0.1);
-    mRP->run_pid(1, 30, 100);
-    
-    DoPuzzle();
+    mRP->set_pid_params(0.0, 0.01, 0.0);    
+    mRP->run_pid(0, 30, 50);
+    // 直進1
+    mRP->set_pid_params(1.0, 0.03, 0.075);
+    mRP->run_pid(0, 60, 2200);//60
+    // 第１コーナー
+    mRP->set_pid_params(1.2, 0.00, 0.1);
+    mRP->run_pid(0, 50, 1800);
+    // 直進2
+    mRP->set_pid_params(1.0, 0.1, 0.09);
+    mRP->run_pid(0, 50, 1600);
+    mRP->set_pid_params(1.0, 0.1, 0.09);
+    mRP->run_pid(0, 45, 150);   //速度余裕有
+    ev3_speaker_play_tone(NOTE_AS4, 300);
+    // 第2コーナー
+    mRP->set_pid_params(1.7, 0.00, 0.1);
+    mRP->run_pid(0, 40, 600);
+    // 直進3
+    mRP->set_pid_params(1.0, 0.1, 0.04);
+    mRP->run_pid(0, 40, 650);
+    ev3_speaker_play_tone(NOTE_AS4, 300);
+    // 第3コーナー
+    mRP->set_pid_params(2.5, 0.05, 0.09);
+    mRP->run_pid(0, 40, 750);
+    // 直進4
+    mRP->set_pid_params(1.0, 0.1, 0.09);
+    mRP->run_pid(0, 50, 200);
+    mRP->set_pid_params(1.0, 0.1, 0.09);
+    mRP->run_pid(0, 60, 2300);
+    //ゴール後
+    mRP->set_pid_params(1.8, 0.00, 0.1);
+    mRP->run_pid(0, 40, 570);
 }
 
 void Scenario::RGB2HSV(void){
     int color;
-    // mRP->SetArmAngle(30, -20);
+    mRP->SetArmAngle(30, 45);
     color = mRP->RGB2HSV();
 
     switch(color) {
@@ -326,39 +321,22 @@ void Scenario::RGB2HSV(void){
 }
 
 void Scenario::TEST(void){
+   // タイム計測
+    mRP->setStartTime();
+    // Rコース
     // スタート
-    mRP->set_pid_params(0.00, 0.01, 0.0);
-    mRP->run_pid(0, 20, 50);
-    //mRP->move(30, 0, 150);
+    mRP->set_pid_params(0.00, 0.02, 0.0);
+    mRP->run_pid(0, 30, 50);
+
+    // for CS
+    // // 直進1
+    mRP->set_pid_params(1.35, 0.03, 0.08);
+    //mRP->set_pid_params(1.45, 0.01, 0.08);
+    mRP->run_pid(0, 60, 2000);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     
-   
-    //mRP->SetArmAngle(80, -20); //-20
-    mRP->set_pid_params(0.6, 0.1, 0.3);
-    mRP->run_pid(0, 30, 150);//150
     
 
-    mRP->ColorDetect(0);
-    mRP->Turn(-90);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    mRP->ColorDetect(0);
-    mRP->Turn(90);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    mRP->ColorDetect(0);
-    mRP->Turn(90);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    mRP->ColorDetect(0);
-    mRP->Turn(90);
-   ev3_speaker_play_tone(NOTE_A4, 300);
-    mRP->ColorDetect(0);
-    //mRP->Turn(-120);
-    //mRP->ColorDetect(0);
-    ///mRP->Turn(-60);
-    //while(1){
-    //mRP->ColorDetect(0);
-    //mRP->Turn(-120);
-    //mRP->ColorDetect(0);
-    //mRP->Turn(-60);
-    //}
 }
 
 void Scenario::DoPuzzle(){
