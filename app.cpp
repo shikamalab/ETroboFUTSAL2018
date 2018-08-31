@@ -22,7 +22,7 @@
 //#include "ColorLightSensor.h"
 #include "Scenario.h"
 #include "HSV.h"
-#include "Block_area.h"
+#include "Block.h"
 
 using namespace ev3api;
 
@@ -52,6 +52,10 @@ using namespace ev3api;
 
 // ログ収集最大件数
 #define MAX_RECORD 100000
+
+extern int selected_result;
+extern Result result[24];
+
 
 // 関数プロトタイプ宣言
 int wait_event(void);
@@ -112,6 +116,8 @@ void main_task(intptr_t unused)
 	gUI = new UI();		// ユーザインタフェースオブジェクト生成
 	gBT = new BT();		// ブルーツース通信オブジェクト生成
 
+	ev3_led_set_color(LED_GREEN);
+
 	//gRunMethod = new RunMethod(armMotor, tailMotor, leftMotor, rightMotor, gHSV, gRloc);
     gRunPattern = new RunPattern(/*sonarSensor,*/ gMotorControl, gHSV, gRloc);
 	gScenario = new Scenario(gRunPattern, gRloc, gB_area);
@@ -127,7 +133,7 @@ void main_task(intptr_t unused)
     gMotorControl->arm_init_zero();
 
     // Bluetooth通信タスクの起動
-    wup_tsk(BT_TASK);
+   wup_tsk(BT_TASK);
 
     // 尻尾及びアーム、走行モーターエンコーダーリセット
 	armMotor->reset();
@@ -135,6 +141,11 @@ void main_task(intptr_t unused)
     gMotorControl->wheels_reset();
 
     ev3_led_set_color(LED_ORANGE); // 初期化完了通知
+
+	// ブロック並べ試験用 2018年7月18日 鹿間
+	gB_area->test5(18628);
+	gB_area->test6(8, 12, 0, 4);
+	//selected_result = 2;
 
     // スタート待機
     while(1)
@@ -181,8 +192,7 @@ void main_task(intptr_t unused)
 
 	elog->output(LOG_END);
 
-	gBT->file_transfer();	    // ログファイル転送
-    ter_tsk(BT_TASK);           //　BTタスク終了
+	ter_tsk(BT_TASK);           //　BTタスク終了
     ext_tsk();                  // メインタスク終了
 }
 
@@ -219,14 +229,12 @@ void drive_task(intptr_t exinf)
             break;
         }
         else if (mode == 1) {           // L Course
-            //gUI->InputCode();
-            gB_area->ttest(gUI->InputCode());
             //gB_area->test2(gBT->get_bt());
             ev3_speaker_play_tone(NOTE_F5, 300);
             while(1){
                 if (touchSensor->isPressed()) break; // タッチセンサが押された
             }
-            gScenario->L();
+ 			gScenario->DoPuzzle();
             break;
         }
         else if (mode == 2) {           // RGB to HSV
@@ -234,7 +242,7 @@ void drive_task(intptr_t exinf)
             break;
         }
         else if (mode == 3) {           // TEST
-            gB_area->test2(gBT->get_bt());
+            //gB_area->test2(gBT->get_bt());
             ev3_speaker_play_tone(NOTE_F5, 300);
             while(1){
                 if (touchSensor->isPressed()) break; // タッチセンサが押された
@@ -295,8 +303,9 @@ int wait_event(void) {
 // 概要 : Bluetooth通信によるコマンド受信用のタスク
 //*****************************************************************************
 void bt_task(intptr_t unused) {
-    gBT->open();        // ブルーツースデバイスオープン
-    gBT->recv_cmd();    // コマンド受信処理
+    if (gBT->open() == 0) {       // ブルーツースデバイスオープン
+    	//gBT->recv_cmd();    // コマンド受信処理
+	}
 }
 
 //*****************************************************************************

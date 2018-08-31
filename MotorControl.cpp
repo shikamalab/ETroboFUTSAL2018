@@ -66,7 +66,7 @@ void MotorControl::arm_init_zero(void){
 			if (++count == 10) break;
 		}
 	}
-	while (mArmMotor->getCount() < (min + 50)) {
+	while (mArmMotor->getCount() < (min + 30)) {
 		mArmMotor->setPWM(10);
 		tslp_tsk(10);
 	}
