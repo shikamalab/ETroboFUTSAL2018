@@ -78,17 +78,17 @@ void HSV::Convert(int mode, bool flag_NEO) {
     }
     else{
         // モデル色判定
-        if (v < 10)    color = BLACK;
+        if (v < 5)    color = BLACK;
         else{
-            if (s < 25) color = WHITE;
-            else if (s < 45 && v < 25)    color = GRAY;
+            if (s < 35) color = WHITE;
+            else if (s < 45 && v < 40)    color = GRAY;
             else{
                 if (h > 330 || h < 30)    color = RED;
                 else if (h < 80){
                     if (s > 65) color = YELLOW;
                     else        color = WOOD;
                 }
-                else if (h < 150) color = GREEN;
+                else if (h < 160) color = GREEN;
                 else color = BLUE;
             }
         }

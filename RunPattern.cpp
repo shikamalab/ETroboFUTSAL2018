@@ -187,8 +187,8 @@ void RunPattern::run_pid(int forward_value){
 void RunPattern::run_pid(int edge, int forward_value){
 	forward = forward_value;
 	int err = mHSV->GetValue() - (LIGHT_WHITE + LIGHT_BLACK)/2;
-	// if (edge & 0b00000010) {err = mHSV->GetValue() - (LIGHT_GRAY + LIGHT_BLACK)/2;}		//これじゃなくて
-	if (edge & 0b00000010) {err = mHSV->GetValue() - (LIGHT_GRAY + LIGHT_WHITE)/2;}	//これにしたい
+	if (edge & 0b00000010) {err = mHSV->GetValue() - (LIGHT_GRAY + LIGHT_BLACK)/2;}		//これじゃなくて
+	// if (edge & 0b00000010) {err = mHSV->GetValue() - (LIGHT_GRAY + LIGHT_WHITE)/2;}	//これにしたい
 	if (edge & 0b00000100) {err = mHSV->GetValue() - (LIGHT_WOOD + LIGHT_BLACK)/2;}
 	if (edge & 0b00001000) {err = mHSV->GetValue() - (LIGHT_WHITE_BLOCK + LIGHT_BLACK)/2;}
 	if (edge & 0b00010000) {err = mHSV->GetValue() - (LIGHT_WHITE_BLOCK + LIGHT_GRAY_BLOCK)/2;}
@@ -240,15 +240,15 @@ void RunPattern::run_pid(int edge, int forward_value, int distance_mm){
 void RunPattern::TurnR90(){
 	int startAngle = mRloc->omega_d;
 	while(1){
-		move(4, 25);//3,17 or 4,25
-		if((mRloc->omega_d - startAngle) >= 96 ){	//93yoyu-
+		move(4, 5);//3,17 or 4,25
+		if((mRloc->omega_d - startAngle) >= 90){	//93yoyu-
 			break;
 		}
 	}
 }
 
 void RunPattern::TurnL90(){
-	int startAngle = mRloc->omega_d - 96;	// 誤差調整
+	int startAngle = mRloc->omega_d - 90;	// 誤差調整
 	while(1){
 		move(-4, -25);//-3,-17 or -4,-25
 		if((mRloc->omega_d - startAngle) <= 0 ){
@@ -258,7 +258,7 @@ void RunPattern::TurnL90(){
 }
 
 void RunPattern::TurnL80(){
-	int startAngle = mRloc->omega_d - 84;	// 誤差調整
+	int startAngle = mRloc->omega_d - 80;	// 誤差調整
 	while(1){
 		move(-4, -25);//-3,-17 or -4,-25
 		if((mRloc->omega_d - startAngle) <= 0 ){
@@ -271,14 +271,14 @@ void RunPattern::TurnR180(){
 	int startAngle = mRloc->omega_d;
 	while(1){
 		move(4, 25);//3,17 or 4,25
-		if((mRloc->omega_d - startAngle) >= 192 ){	//93yoyu-
+		if((mRloc->omega_d - startAngle) >= 180 ){	//93yoyu-
 			break;
 		}
 	}
 }
 
 void RunPattern::TurnL180(){
-	int startAngle = mRloc->omega_d - 192;	// 誤差調整
+	int startAngle = mRloc->omega_d - 180;	// 誤差調整
 	while(1){
 		move(-4, -25);//-3,-17 or -4,-25
 		if((mRloc->omega_d - startAngle) <= 0 ){
@@ -292,28 +292,28 @@ void RunPattern::TurnR(int angle){
 	// angle = angle * 1.1;	//誤差調整1.10
 	switch(angle){
 		case 30:
-			angle = 26;	//31
+			angle = 30;	//31
 			break;
 		case 45:
-			angle = 41;	//46
+			angle = 45;	//46
 			break;
 		case 60:
-			angle = 56;	//62
+			angle = 60;	//62
 			break;
 		case 90:
 			angle = 90;	//93
 			break;
 		case 120:
-			angle = 122;	//124
+			angle = 120;	//124
 			break;
 		case 135:
-			angle = 137;	//137
+			angle = 135;	//137
 			break;
 		case 150:
-			angle = 156;	//155
+			angle = 150;	//155
 			break;
 		case 180:
-			angle = 192;	//188
+			angle = 180;	//188
 			break;
 		default:
 			angle = angle * 89 / 90;
@@ -333,28 +333,28 @@ void RunPattern::TurnRWithBlock(int angle){
 	// angle = angle * 1.1;	//誤差調整1.10
 	switch(angle){
 		case 30:
-			angle = 25;
+			angle = 30;
 			break;
 		case 45:
-			angle = 40;
+			angle = 45;
 			break;
 		case 60:
-			angle = 56;
+			angle = 60;
 			break;
 		case 90:
-			angle = 88;
+			angle = 90;
 			break;
 		case 120:
 			angle = 120;
 			break;
 		case 135:
-			angle = 137;
+			angle = 135;
 			break;
 		case 150:
-			angle = 155;
+			angle = 150;
 			break;
 		case 180:
-			angle = 187;
+			angle = 180;
 			break;
 		default:
 			angle = angle * 93 / 90;
@@ -376,28 +376,28 @@ void RunPattern::TurnL(int angle){
  		//用変更
  		//75do
 		case 30:
-			angle = 20;	//31
+			angle = 30;	//31
 			break;
 		case 45:
-			angle = 35;	//46
+			angle = 45;	//46
 			break;
 		case 60:
-			angle = 51;	//62
+			angle = 60;	//62
 			break;
 		case 90:
-			angle = 82;	//92
+			angle = 90;	//92
 			break;
 		case 120:
-			angle = 117;	//123
+			angle = 120;	//123
 			break;
 		case 135:
-			angle = 134;	//137
+			angle = 135;	//137
 			break;
 		case 150:
-			angle = 152;	//155
+			angle = 150;	//155
 			break;
 		case 180:
-			angle = 186;	//186
+			angle = 180;	//186
 			break;
 		default:
 			angle = angle * 89 / 90;
@@ -418,28 +418,28 @@ void RunPattern::TurnLWithBlock(int angle){
  		//用変更
  		//75do
 		case 30:
-			angle = 20;
+			angle = 30;
 			break;
 		case 45:
-			angle = 35;
+			angle = 45;
 			break;
 		case 60:
-			angle = 51;
+			angle = 60;
 			break;
 		case 90:
-			angle = 82;
+			angle = 90;
 			break;
 		case 120:
-			angle = 117;
+			angle = 120;
 			break;
 		case 135:
-			angle = 134;
+			angle = 135;
 			break;
 		case 150:
-			angle = 152;
+			angle = 150;
 			break;
 		case 180:
-			angle = 186;
+			angle = 180;
 			break;
 		default:
 			angle = angle * 93 / 90;
@@ -480,8 +480,8 @@ void RunPattern::TurnWithBlock(int angle){
 
 	while((mRloc->distance - start_dist) <= dist){//70
 		err = mRloc->omega_d - m_sum_angle;
-		if (err > 0) move(25, -2);//15
-		else move(25, 2);//15
+		if (err > 0) move(5, -2);//15 //25
+		else move(5, 2);//15 //25
 	}
 
 	if (angle == -180)

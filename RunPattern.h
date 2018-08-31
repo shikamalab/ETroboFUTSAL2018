@@ -9,11 +9,11 @@ extern "C" {
 #define LIGHT_WHITE_BLOCK	25
 #define LIGHT_GRAY_BLOCK	15
 // これにしたい
+// #define LIGHT_WHITE		36
+// #define LIGHT_GRAY		20
+// 下はマジックナンバーなんやけど・・・
 #define LIGHT_WHITE		24
 #define LIGHT_GRAY		12
-// 下はマジックナンバーなんやけど・・・
-// #define LIGHT_WHITE		24
-// #define LIGHT_GRAY		32
 #define LIGHT_WOOD		7
 #define LIGHT_BLACK 	0
 
@@ -24,7 +24,7 @@ extern "C" {
 #define _BLUE_ 4
 #define _YELLOW_ 5
 
-#define CENTER_DISTANCE 100
+#define CENTER_DISTANCE 100	
 
 #include "ev3api.h"
 #include "Clock.h"

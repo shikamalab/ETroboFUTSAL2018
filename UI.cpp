@@ -76,7 +76,7 @@ int UI::exec(void)
 		if (code == 1) {
 			if (++msg_id == 5) { msg_id = 0; }
 		}
-		else if (code == 5)
+		else if (code == 2)
 			break;
 	}
 	tslp_tsk(200); /* 300msec wait */
@@ -97,7 +97,7 @@ void UI::disp_msg(int mid) {
 	else if (mid == 2) buf = s3;
 	else if (mid == 3) buf = s4;
 	else buf = s5;
-	ev3_lcd_draw_string(buf, 20, 30);
+		ev3_lcd_draw_string(buf, 20, 30);
 }
 
 int UI::InputCode(void){
