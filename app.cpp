@@ -246,7 +246,7 @@ void drive_task(intptr_t exinf)
             gScenario->TEST();
             break;
         }
-        else if (mode == 4) {           // L Course
+        else if (mode == 4) {           // DoPuzzle
             ev3_speaker_play_tone(NOTE_F5, 300);
             while(1){
                 if (touchSensor->isPressed()) break; // タッチセンサが押された
