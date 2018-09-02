@@ -23,6 +23,7 @@ public:
 	void L(void);
 	void RGB2HSV(void);
 	void TEST(void);
+	void TEST2(void);
 	void DoPuzzle(void);
 	int Block(void);
 	void L_SHORT(void);
