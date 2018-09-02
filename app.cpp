@@ -229,13 +229,8 @@ void drive_task(intptr_t exinf)
             break;
         }
         else if (mode == 1) {           // L Course
-            //gB_area->test2(gBT->get_bt());
-            ev3_speaker_play_tone(NOTE_F5, 300);
-            while(1){
-                if (touchSensor->isPressed()) break; // タッチセンサが押された
-            }
- 			gScenario->DoPuzzle();
-            break;
+		gScenario->L();
+		break;
         }
         else if (mode == 2) {           // RGB to HSV
             gScenario->RGB2HSV();
@@ -247,8 +242,8 @@ void drive_task(intptr_t exinf)
             while(1){
                 if (touchSensor->isPressed()) break; // タッチセンサが押された
             }
-            gScenario->DoPuzzle();
-            //gScenario->TEST();
+            //gScenario->DoPuzzle();
+            gScenario->TEST();
             break;
         }
         else if (mode == 4) {           // L Course
@@ -256,7 +251,7 @@ void drive_task(intptr_t exinf)
             while(1){
                 if (touchSensor->isPressed()) break; // タッチセンサが押された
             }
-            gScenario->TEST();
+            gScenario->DoPuzzle();
             break;
         }
         // slp_tsk();
