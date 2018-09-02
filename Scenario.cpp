@@ -350,7 +350,7 @@ void Scenario::RGB2HSV(void){
 }
 
 void Scenario::TEST(void){
-    スタート
+    //スタート
       mRP->set_pid_params(0.00, 0.5, 0.0); //0.4
       mRP->run_pid(0, 30, 50);
    
