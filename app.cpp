@@ -1,3 +1,4 @@
+﻿
 // 力ラーセンサーRGB RAW値取得サンプルプログラム。
 
 #include "ev3api.h"
@@ -5,7 +6,7 @@
 #include <string.h>
 #include <syssvc/serial.h>
 #include "TouchSensor.h"
-// #include "SonarSensor.h" unnti
+// #include "SonarSensor.h"
 //#include "ColorSensor.h"
 #include "GyroSensor.h"
 #include "Motor.h"
@@ -21,7 +22,7 @@
 //#include "ColorLightSensor.h"
 #include "Scenario.h"
 #include "HSV.h"
-#include "Block_area.h"
+#include "Block.h"
 
 using namespace ev3api;
 
@@ -52,6 +53,10 @@ using namespace ev3api;
 // ログ収集最大件数
 #define MAX_RECORD 100000
 
+extern int selected_result;
+extern Result result[24];
+
+
 // 関数プロトタイプ宣言
 int wait_event(void);
 
@@ -60,22 +65,22 @@ TouchSensor*    touchSensor;
 // SonarSensor*    sonarSensor;
 //ColorSensor*    colorSensor;
 GyroSensor*     gyroSensor;
-Motor*          armMotor;
+Motor*			armMotor;
 Motor*          leftMotor;
 Motor*          rightMotor;
 Motor*          tailMotor;
 Clock*          clock;
-EvLog*          elog;
-RoboLoc*        gRloc;
-//ArmControl*       gArmControl;
-//ArmControl*       gTailControl;
+EvLog*			elog;
+RoboLoc*		gRloc;
+//ArmControl*		gArmControl;
+//ArmControl*		gTailControl;
 MotorControl*   gMotorControl;
-//RunMethod*        gRunMethod;
-RunPattern*     gRunPattern;
-UI*             gUI;
-BT*             gBT;
-//ColorLight*       gColorLight;
-Scenario*       gScenario;
+//RunMethod*		gRunMethod;
+RunPattern*		gRunPattern;
+UI*				gUI;
+BT*				gBT;
+//ColorLight*		gColorLight;
+Scenario*		gScenario;
 HSV*            gHSV;
 Block_area*     gB_area;
 
@@ -85,7 +90,7 @@ Block_area*     gB_area;
 // 関数名 : main_task
 // 概要 : 全体の初期化と終了処理を行うタスク
 //*****************************************************************************
-int eflag = 0;  // 終了フラグ
+int eflag = 0;	// 終了フラグ
 int mode = 0;   // 動作モード
 static int bt_cmd = 0; // Bluetoothコマンド 1:リモートスタート
 void main_task(intptr_t unused)
@@ -97,43 +102,50 @@ void main_task(intptr_t unused)
     // sonarSensor  = new SonarSensor(PORT_3);
     ev3_sensor_config(EV3_PORT_3, ULTRASONIC_SENSOR);
     gyroSensor   = new GyroSensor(PORT_4);
-    armMotor     = new Motor(PORT_A);
+	armMotor	 = new Motor(PORT_A);
     rightMotor   = new Motor(PORT_B);
     leftMotor    = new Motor(PORT_C);
     tailMotor    = new Motor(PORT_D);
     clock        = new Clock();
-    gRloc        = new RoboLoc(50., 62.5, 1.0);
+	gRloc		 = new RoboLoc(50., 62.5, 1.0);
     gB_area       = new Block_area();
-    //gArmControl  = new ArmControl(armMotor);
-    //gTailControl = new ArmControl(tailMotor);
+	//gArmControl  = new ArmControl(armMotor);
+	//gTailControl = new ArmControl(tailMotor);
     gMotorControl = new MotorControl(armMotor, tailMotor, leftMotor, rightMotor);
 
-    gUI = new UI();     // ユーザインタフェースオブジェクト生成
-    gBT = new BT();     // ブルーツース通信オブジェクト生成
+	gUI = new UI();		// ユーザインタフェースオブジェクト生成
+	gBT = new BT();		// ブルーツース通信オブジェクト生成
 
-    //gRunMethod = new RunMethod(armMotor, tailMotor, leftMotor, rightMotor, gHSV, gRloc);
+	ev3_led_set_color(LED_GREEN);
+
+	//gRunMethod = new RunMethod(armMotor, tailMotor, leftMotor, rightMotor, gHSV, gRloc);
     gRunPattern = new RunPattern(/*sonarSensor,*/ gMotorControl, gHSV, gRloc);
-    gScenario = new Scenario(gRunPattern, gRloc, gB_area);
-    elog = new EvLog(clock, /*sonarSensor,*/ gyroSensor, gMotorControl, gRunPattern, gHSV, gRloc, MAX_RECORD);
+	gScenario = new Scenario(gRunPattern, gRloc, gB_area);
+	elog = new EvLog(clock, /*sonarSensor,*/ gyroSensor, gMotorControl, gRunPattern, gHSV, gRloc, MAX_RECORD);
 
     // 画面初期化
     ev3_lcd_fill_rect(0,0,EV3_LCD_WIDTH,EV3_LCD_HEIGHT,EV3_LCD_WHITE);
     ev3_lcd_draw_string("main_task", 10, 0);
 
-    mode = gUI->exec();     // ユーザが選択したモード 0、1、2
+	mode = gUI->exec();		// ユーザが選択したモード 0、1、2
 
     // アームモーター初期化
     gMotorControl->arm_init_zero();
 
     // Bluetooth通信タスクの起動
-    wup_tsk(BT_TASK);
+   wup_tsk(BT_TASK);
 
     // 尻尾及びアーム、走行モーターエンコーダーリセット
-    armMotor->reset();
-    tailMotor->reset();
+	armMotor->reset();
+	tailMotor->reset();
     gMotorControl->wheels_reset();
 
     ev3_led_set_color(LED_ORANGE); // 初期化完了通知
+
+	// ブロック並べ試験用 2018年7月18日 鹿間
+	gB_area->test5(18628);
+	gB_area->test6(8, 12, 0, 4);
+	//selected_result = 2;
 
     // スタート待機
     while(1)
@@ -143,7 +155,7 @@ void main_task(intptr_t unused)
         // fputc(c, bt); //Bluetoothエコーバック
         if (bt_cmd == 1)    break;  //リモートスタート
         //if (touchSensor->isPressed()) break; // タッチセンサが押された
-        tslp_tsk(10);
+		tslp_tsk(10);
     }
 
     // ジャイロセンサーリセット
@@ -157,14 +169,14 @@ void main_task(intptr_t unused)
     act_tsk(WUP_TASK);
 
     //  終了フラグを監視
-    #define LOG_SAVE 0
-    #define LOG_END  1
+	#define LOG_SAVE 0
+	#define LOG_END  1
 
     // 50ms毎にログをファイルに書き込み
-    while (gBT->eflag == 0 && (eflag == 0)) {
-        elog->output(LOG_SAVE);
-        clock->sleep(50);
-    }
+	while (gBT->eflag == 0 && (eflag == 0)) {
+		elog->output(LOG_SAVE);
+		clock->sleep(50);
+	}
 
     // 尻尾及びアーム、走行モーターエンコーダーリセット
     armMotor->reset();
@@ -178,10 +190,9 @@ void main_task(intptr_t unused)
     ev3_lcd_fill_rect(0,0,EV3_LCD_WIDTH,EV3_LCD_HEIGHT ,EV3_LCD_WHITE);
     ev3_lcd_draw_string("Terminate tasks...", 10, 46);
 
-    elog->output(LOG_END);
+	elog->output(LOG_END);
 
-    gBT->file_transfer();       // ログファイル転送
-    ter_tsk(BT_TASK);           //　BTタスク終了
+	ter_tsk(BT_TASK);           //　BTタスク終了
     ext_tsk();                  // メインタスク終了
 }
 
@@ -218,7 +229,12 @@ void drive_task(intptr_t exinf)
             break;
         }
         else if (mode == 1) {           // L Course
-            gScenario->L();
+            //gB_area->test2(gBT->get_bt());
+            ev3_speaker_play_tone(NOTE_F5, 300);
+            while(1){
+                if (touchSensor->isPressed()) break; // タッチセンサが押された
+            }
+ 			gScenario->DoPuzzle();
             break;
         }
         else if (mode == 2) {           // RGB to HSV
@@ -226,12 +242,12 @@ void drive_task(intptr_t exinf)
             break;
         }
         else if (mode == 3) {           // TEST
-            gB_area->test2(gBT->get_bt());
+            //gB_area->test2(gBT->get_bt());
             ev3_speaker_play_tone(NOTE_F5, 300);
             while(1){
                 if (touchSensor->isPressed()) break; // タッチセンサが押された
             }
-            gScenario->TEST();
+            gScenario->DoPuzzle();
             //gScenario->TEST();
             break;
         }
@@ -240,13 +256,13 @@ void drive_task(intptr_t exinf)
             while(1){
                 if (touchSensor->isPressed()) break; // タッチセンサが押された
             }
-            gScenario->DoPuzzle();
+            gScenario->TEST();
             break;
         }
         // slp_tsk();
     }
     eflag = 1;
-    ext_tsk();          // ドライブタスク終了
+    ext_tsk();			// ドライブタスク終了
 }
 
 //*****************************************************************************
@@ -264,11 +280,11 @@ int wait_event(void) {
     // gHSV->Disp();
 
     // ログ収集
-    if ((count++ % LN) == 0)
-        elog->input(0, count, count_u, 0, gRloc->omega_d);   // (int cflag, int x1, int x2, int x3, int x4)
+	if ((count++ % LN) == 0)
+		elog->input(0, count, count_u, 0, gRloc->omega_d);   // (int cflag, int x1, int x2, int x3, int x4)
 
     // 自己位置計算
-    gRloc->input(leftMotor->getCount(), rightMotor->getCount());
+	gRloc->input(leftMotor->getCount(), rightMotor->getCount());
 
     // バックボタン押下時、異常色検知時停止
     if (ev3_button_is_pressed(BACK_BUTTON) || gHSV->GetColorNumber() == 8) {
@@ -276,8 +292,8 @@ int wait_event(void) {
         eflag = 1;                  // 終了フラグセット
         wup_tsk(MAIN_TASK);         // メインタスク起床
     }
-    slp_tsk();
-    return eflag;
+	slp_tsk();
+	return eflag;
 }
 
 //*****************************************************************************
@@ -287,8 +303,9 @@ int wait_event(void) {
 // 概要 : Bluetooth通信によるコマンド受信用のタスク
 //*****************************************************************************
 void bt_task(intptr_t unused) {
-    gBT->open();        // ブルーツースデバイスオープン
-    gBT->recv_cmd();    // コマンド受信処理
+    if (gBT->open() == 0) {       // ブルーツースデバイスオープン
+    	//gBT->recv_cmd();    // コマンド受信処理
+	}
 }
 
 //*****************************************************************************
@@ -298,7 +315,7 @@ void bt_task(intptr_t unused) {
 // 概要 : 超音波センサ読み出しとリセットを定期的に行うタスク
 //*****************************************************************************
 void ultrasonic_task(intptr_t unused) {
-    char sonar[18];
+    char sonar[20];
     slp_tsk();
     while (1) {
         // 25ms毎に超音波測距
