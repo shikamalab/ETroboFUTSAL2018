@@ -251,7 +251,7 @@ void drive_task(intptr_t exinf)
             while(1){
                 if (touchSensor->isPressed()) break; // タッチセンサが押された
             }
-            gScenario->DoPuzzle();
+            gScenario->TEST2();
             break;
         }
         // slp_tsk();
