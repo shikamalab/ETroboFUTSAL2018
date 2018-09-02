@@ -378,7 +378,8 @@ void Scenario::TEST(void){
     
 }
 
-    
+void Scenario::TEST2(void){
+}    
 
 
 FILE *sfp;
