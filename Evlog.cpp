@@ -144,7 +144,7 @@ void EvLog::output(int eflag)
 	int i;
 	if (total_count == mMaxRecord) { return; }
 	if (ioflag == 1) {
-		fp = fopen(fname, "w");
+		fp = fopen("evlog.csv", "w");
 		fprintf(fp,"time, arm, tail, sonar, gyro, lmtr, rmtr, pwm_L, pwm_R, color, RAW_R, RAW_G, RAW_B, hue, saturation, value, bright, distance, x1, x2, x3, x4\n");
 		ioflag = 0;
 	}
