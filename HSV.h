@@ -21,7 +21,8 @@ private:
         double s;                           // 0.0 - 1.0 (0 - 100)  Saturation(彩度)
         double v;                           // 0.0 - 1.0 (0 - 100)  Value(明度)
     };
-
+    
+    int colorid;
     enum color_num {                        // 色情報用列挙体 白、黒、赤、緑、青、黄、木、灰、異常
         WHITE = 0, BLACK = 1, RED = 2, GREEN = 3, BLUE = 4, YELLOW = 5, WOOD = 6, GRAY = 7, ERROR = 8,
     } color;                                //　色情報格納場所
