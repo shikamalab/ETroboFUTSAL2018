@@ -493,6 +493,9 @@ fprintf(sfp, "DP1\n");
 	}
 }
 
+void Scenario::TEST2(void){
+}
+
 int Scenario::Block(void){
 
     fprintf(sfp, "Block1\n");
