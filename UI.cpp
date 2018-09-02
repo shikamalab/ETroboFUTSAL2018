@@ -17,35 +17,35 @@ int UI::input_check(void){
 	if (ev3_button_is_pressed(RIGHT_BUTTON)) {
         btn_cnt++;
         if(btn_cnt == 1){
-            ev3_speaker_play_tone(NOTE_C4, 50);
+            ev3_speaker_play_tone(NOTE_A4, 50);
             return (1);
         }
     }
     else if (ev3_button_is_pressed(LEFT_BUTTON )) {
         btn_cnt++;
         if(btn_cnt == 1){
-            ev3_speaker_play_tone(NOTE_C4, 50);
+            ev3_speaker_play_tone(NOTE_A4, 50);
             return (2);
         }
     }
     else if (ev3_button_is_pressed(UP_BUTTON )) {
         btn_cnt++;
         if(btn_cnt == 1){
-            ev3_speaker_play_tone(NOTE_C4, 50);
+            ev3_speaker_play_tone(NOTE_A4, 50);
             return (3);
         }
     }
     else if (ev3_button_is_pressed(DOWN_BUTTON )) {
         btn_cnt++;
         if(btn_cnt == 1){
-            ev3_speaker_play_tone(NOTE_C4, 50);
+            ev3_speaker_play_tone(NOTE_A4, 50);
             return (4);
         }
     }
     else if (ev3_button_is_pressed(ENTER_BUTTON )) {
         btn_cnt++;
         if(btn_cnt == 1){
-            ev3_speaker_play_tone(NOTE_D5, 200);
+            ev3_speaker_play_tone(NOTE_B4, 500);
             return (5);
         }
     }
@@ -76,6 +76,9 @@ int UI::exec(void)
 		if (code == 1) {
 			if (++msg_id == 5) { msg_id = 0; }
 		}
+        else if (code == 2) {
+            if (--msg_id == -1) { msg_id = 4; }
+        }
 		else if (code == 5)
 			break;
 	}
@@ -89,7 +92,7 @@ void UI::disp_msg(int mid) {
 	char s2[] = "L Course   ";
 	char s3[] = "RGB to HSV ";
 	char s4[] = "TEST       ";
-	char s5[] = "L SHORTCUT ";
+	char s5[] = "TEST2      ";
 	char *buf;
 
 	if (mid == 0) buf = s1;
@@ -102,8 +105,8 @@ void UI::disp_msg(int mid) {
 
 int UI::InputCode(void){
 	//char num[10][] = {"0","1","2","3","4","5","6","7","8","9"};
-	char mark[2][14] = {"    A    ","    V    "};
-	char s1[] = "Input Initial Code...";
+	char mark[2][14] = {"    v    ","    V    "};
+	char s1[] = "=Code Inputter=";
 	char *buf;
 	char num[5][10] = {"0","0","0","0","0"};
 	int init_code[5] = {0,0,0,0,0};
@@ -114,7 +117,7 @@ int UI::InputCode(void){
     ev3_speaker_set_volume(5);
 
     buf = s1;
-    ev3_lcd_draw_string(buf, 0, 0);
+    ev3_lcd_draw_string(buf, 10, 0);
 
     while (1) {
     	// =============Draw===============
@@ -124,10 +127,8 @@ int UI::InputCode(void){
   		}
   		buf = mark[0];
   		ev3_lcd_draw_string(buf, 60 - 10 * select_digit, 34);
-  		buf = mark[1];
-  		ev3_lcd_draw_string(buf, 60 - 10 * select_digit, 65);
-        //sprintf(sturn,"Turn   :%3d ",(int)turn_val);
-        //ev3_lcd_draw_string(sturn,0,100);
+  		//buf = mark[1];
+  		//ev3_lcd_draw_string(buf, 60 - 10 * select_digit, 65);
 
         // =============Input==============
         btn_code = input_check();
