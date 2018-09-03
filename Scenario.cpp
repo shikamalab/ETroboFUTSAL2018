@@ -292,43 +292,8 @@ void Scenario::L(){
     ev3_speaker_play_tone(NOTE_A4, 300);
     mRP->ColorDetect(0);
     ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->ColorDetect(0);
-     //mRP->Turn(0);
-    //mRP->Turn(95);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->ColorDetect(0);
-     //mRP->Turn(0);
-   // mRP->Turn(95);
-   //ev3_speaker_play_tone(NOTE_A4, 300);
-    // mRP->ColorDetect(0);
-    //mRP->Turn(95);
-    //mRP->ColorDetect(0);
-    // mRP->Turn(0);
-   // mRP->Turn(-180);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->ColorDetect(0);
-    // mRP->Turn(0);
-    //mRP->Turn(180);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->ColorDetect(0);
-    //mRP->Turn(95);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-   // mRP->ColorDetect(0);
-     //mRP->Turn(0);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->ColorDetect(0);
-     //mRP->Turn(0);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-   // mRP->ColorDetect(0);
-    //mRP->Turn(95);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->ColorDetect(0);
-    // mRP->Turn(0);
-    //while(1){
-    //mRP->ColorDetect(0);
-    //mRP->Turn(-120);
-    //mRP->ColorDetect(0);
-    //mRP->Turn(-60);
+
+    
     //}
 }
 
@@ -350,7 +315,7 @@ void Scenario::RGB2HSV(void){
 }
 
 void Scenario::TEST(void){
-    //スタート
+    // スタート
       mRP->set_pid_params(0.00, 0.5, 0.0); //0.4
       mRP->run_pid(0, 30, 50);
    
@@ -379,7 +344,11 @@ void Scenario::TEST(void){
 }
 
 void Scenario::TEST2(void){
-}    
+
+
+}
+
+
 
 
 FILE *sfp;
