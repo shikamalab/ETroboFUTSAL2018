@@ -17,285 +17,72 @@ Scenario::Scenario(RunPattern* runP, RoboLoc* rloc, Block_area* barea)
 void Scenario::R(){
     // タイム計測
     mRP->setStartTime();
-    // Rコース
+    // Rコース(未完成)
     // スタート
     mRP->set_pid_params(0.00, 0.01, 0.0);
     mRP->run_pid(0, 30, 50);
+
     // for CS
     // // 直進1
-    mRP->set_pid_params(1.0, 0.03, 0.09); //(1.4, 0.01, 0.05)
+    mRP->set_pid_params(1.0, 0.03, 0.09);
     mRP->run_pid(0, 60, 1800);
     ev3_speaker_play_tone(NOTE_A4, 300);
-
-    //カーブ1
+    // カーブ1
     mRP->set_pid_params(1.8, 0.01, 0.15);
     mRP->run_pid(0, 55, 1820);
     ev3_speaker_play_tone(NOTE_A4, 300);
-    // mRP->move(0, 0, 0);
-    // ext_tsk();
-
-    //直進2
-    mRP->set_pid_params(1.0, 0.03, 0.075); //1.3, 0.01, 0.05
+    // 直進2
+    mRP->set_pid_params(1.0, 0.03, 0.075);
     mRP->run_pid(0, 55, 450);
     ev3_speaker_play_tone(NOTE_A4, 300);
-    //  mRP->move(0, 0, 0);
-    //  ext_tsk();
     // カーブ2
     mRP->set_pid_params(1.6, 0.01, 0.13);
     mRP->run_pid(0, 45, 550);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-
-    //カーブ3
+    // カーブ3
     mRP->set_pid_params(2.05, 0.03, 0.13);
     mRP->run_pid(0, 45, 650);
     ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->move(0, 0, 0);
-    //ext_tsk();
-
-    //直進3
-    mRP->set_pid_params(1.0, 0.03, 0.075); //1.3, 0.01, 0.05
+    // 直進3
+    mRP->set_pid_params(1.0, 0.03, 0.075);
     mRP->run_pid(0, 50, 700);
     ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->move(0, 0, 0);
-    //ext_tsk();
-
     // カーブ4
-    //mRP->reset_pid_params();
     mRP->set_pid_params(1.8, 0.03, 0.13);
     mRP->run_pid(0, 45, 1200);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-
-    //直進4
-    mRP->set_pid_params(1.0, 0.03, 0.075); //1.3, 0.01, 0.05
+    // 直進4
+    mRP->set_pid_params(1.0, 0.03, 0.075);
     mRP->run_pid(0, 50, 2700);
+    // 灰色
+    mRP->move(40, 0, 150);
+    // 灰色後直線1
+    mRP->set_pid_params(0.35, 0.15, 0.08);
+    mRP->run_pid(0, 30, 250);
     ev3_speaker_play_tone(NOTE_A4, 300);
-    mRP->set_pid_params(1.0, 0.03, 0.075); //1.3, 0.01, 0.05
-    mRP->run_pid(0, 35, 500);
-
-    // mRP->move(30, 0, 140);
-
-    // mRP->set_pid_params(0.35, 0.5, 0.08);
-    // mRP->run_pid(0, 30, 250);
-    // ev3_speaker_play_tone(NOTE_A4, 300);
-    
-    // mRP->set_pid_params(0.7, 0.5, 0.05);
-    // mRP->run_pid(0, 20, 550); //800
-    // ev3_speaker_play_tone(NOTE_A4, 300);
-
-    // mRP->set_pid_params(1.0, 0.5, 0.01); //0.8,0.2,0.006  1.0,0.5,0.01
-    // mRP->run_pid(0, 10, 150);//550
-    // ev3_speaker_play_tone(NOTE_A4, 300);
-
-    // mRP->move(10, 1, 10);
-
-    //mRP->set_pid_params(1.0, 0.5, 0.01); //0.8,0.2,0.006  1.0,0.5,0.01
-    //mRP->run_pid(1, 10, 165);//550
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-
-    //DoPuzzle();
-
-//sub
-// スタート
-    //mRP->set_pid_params(0.00, 0.5, 0.0); //0.4
-    //RP->run_pid(1, 10, 50);
-
-    //mRP->set_pid_params(1.0, 0.5, 0.01);
-    //mRP->run_pid(1, 10, 165);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-    
-     //DoPuzzle();
-}
-
-    
-
-
-
-
-
-void Scenario::DoPuzzle(){
-
-
-    //パズル侵入
-    //mRP->reset_pid_params();
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->set_pid_params(1.0, 1.7, 0.01);//0.4, 0.15, 0.03
-    //mRP->SetArmAngle(80, -20); //-20
+    // 灰色後カーブ2
+    mRP->set_pid_params(0.7, 0.15, 0.05);
+    mRP->run_pid(0, 20, 650);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    // 灰色後直線2
+    mRP->set_pid_params(1.0, 0.15, 0.01);
+    mRP->run_pid(0, 10, 300);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    // 無理やりエッジ切り替え
+    mRP->move(10, 2, 10);
+    // 灰色後直線3
+    mRP->set_pid_params(1.0, 0.15, 0.01);
+    mRP->run_pid(1, 10, 340);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    // 一個目の赤リング読み取り
     mRP->ColorDetect(0);
-     //mRP->move(0, 0, 0);
-     //ext_tsk();
-    mRP->move(-10, 0, 120);
-    mRP->reset_pid_params();
-    mRP->set_pid_params(0.25, 0.15, 0.03);//0.4, 0.5, 0.03 /0.25, 0.15, 0.03
-    //mRP->ColorDetect(0);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    // パズル侵入
+    DoPuzzle();
 
-    
-
-    //入口選択
-//    block_ptn = mBArea->select(10000);
-//    block_ptn = mBArea->select();
-      block_ptn = selected_result;
-
-    //配列の3番目から入るリングを取得           変更20180722
-    if (result[block_ptn].orders[2] == 8){   // 変更20180722
-        mRP->ColorDetect(0);
-    } else {
-        mRP->TurnR(30);
-        mRP->LineDetect(1);
-        mRP->ColorDetect(0);
-
-    }
-
-    //ここからパズル（予定
-    //Block()が実際に動作し、並べ終わった後
-    //ゴールエリアまでの距離を返す(int)
-    int goalDist = Block();
-
-    if(goalDist != 0){
-        //黒線を探しブロックエリアから脱出
-        mRP->LineDetect(0);
-
-        //PIDを使い、車庫前まで移動
-        mRP->set_pid_params(1.8, 0.34, 0.1);    //1.5, 0.24, 0.1
-        mRP->run_pid(16, 40, goalDist);
-
-        mRP->Chusya();
-    }
-}
-
-int Scenario::Block(void){
-
-
-    //mRP->SetArmAngle(30, -30);  //pwm, angle 30 -20
-    //mRP->set_pid_params(0.4, 0.1, 0.0);   //0.4 0.1 0
-    //mRP->ColorDetect(0);
-    //mRP->Turn(-90);
-    int i = 3;
-    char time[30];
-    // iは3づつ増える
-    // orders[0]には全体の長さの３の倍数になってる
-    while (i < result[block_ptn].orders[0] - 3){
-        switch(result[block_ptn].orders[i]){
-            case 110:   //TURN
-                ev3_speaker_play_tone(NOTE_AS4, 300);
-                sprintf(time,"Turn :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
-                ev3_lcd_draw_string(time,0,60);
-                mRP->Turn(result[block_ptn].orders[i + 1]);
-                break;
-            case 111:   //TURN_BLOCK
-                ev3_speaker_play_tone(NOTE_D5, 300);
-                sprintf(time,"Turn_B :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
-                ev3_lcd_draw_string(time,0,60);
-                mRP->TurnWithBlock(result[block_ptn].orders[i + 1]);
-                break;
-            case 112:   //FORWARD
-                ev3_speaker_play_tone(NOTE_F5, 300);
-                sprintf(time,"Forward :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
-                ev3_lcd_draw_string(time,0,60);
-                mRP->ColorDetect(0);
-                break;
-            case 113:   //FORWARD_BLOCK
-                ev3_speaker_play_tone(NOTE_A5, 300);
-                sprintf(time,"Forward_B :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
-                ev3_lcd_draw_string(time,0,60);
-                if (result[block_ptn].orders[i + 2])
-                    mRP->ColorDetect(0);
-                else
-                    mRP->move(10, -2, 230);
-                break;
-            case 114:   //RELEASE
-                ev3_speaker_play_tone(NOTE_C6, 300);
-                sprintf(time,"Release :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
-                ev3_lcd_draw_string(time,0,60);
-                (result[block_ptn].orders[i + 2]) ? mRP->Release(0) : mRP->Release(1);
-                break;
-            default:    //END
-                ev3_speaker_play_tone(NOTE_B6, 300);
-                sprintf(time,"ERROR! :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
-                ev3_lcd_draw_string(time,0,60);
-                break;
-        }
-        i = i + 3;
-        if (wait_event())   ext_tsk();
-    }
-
-    if (result[block_ptn].orders[i] == 120){
-            return 0;
-    } else if(result[block_ptn].orders[i+1] > 300){ //298 or 317
-        return 450;
-    } else {
-        return 560;
-    } 
 }
 
 void Scenario::L(){
-    //b_area->test2(gBT->get_bt());
-	// Lコース
-	// スタート
-    mRP->set_pid_params(0.00, 0.5, 0.0); //0.4
-    mRP->run_pid(0, 30, 50);
-   
-    mRP->set_pid_params(0.35, 0.5, 0.08);
-    mRP->run_pid(0, 30, 250);
-   ev3_speaker_play_tone(NOTE_A4, 300);
 
-    mRP->set_pid_params(0.7, 0.5, 0.05);
-    mRP->run_pid(0, 20, 790); //800
-    ev3_speaker_play_tone(NOTE_A4, 300);
-
-
-    mRP->set_pid_params(1.0, 0.7, 0.01); //0.8,0.2,0.006  1,0.5,0.01
-    mRP->run_pid(0, 10, 540);//550
-    ev3_speaker_play_tone(NOTE_A4, 300);
-
-    //DoPuzzle();
-
-
-    mRP->reset_pid_params();
-    mRP->set_pid_params(0.4, 0.15, 0.03);
-    //パズル侵入
-    mRP->ColorDetect(0);
-    //mRP->Turn(-95);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    mRP->ColorDetect(0);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->ColorDetect(0);
-     //mRP->Turn(0);
-    //mRP->Turn(95);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->ColorDetect(0);
-     //mRP->Turn(0);
-   // mRP->Turn(95);
-   //ev3_speaker_play_tone(NOTE_A4, 300);
-    // mRP->ColorDetect(0);
-    //mRP->Turn(95);
-    //mRP->ColorDetect(0);
-    // mRP->Turn(0);
-   // mRP->Turn(-180);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->ColorDetect(0);
-    // mRP->Turn(0);
-    //mRP->Turn(180);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->ColorDetect(0);
-    //mRP->Turn(95);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-   // mRP->ColorDetect(0);
-     //mRP->Turn(0);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->ColorDetect(0);
-     //mRP->Turn(0);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-   // mRP->ColorDetect(0);
-    //mRP->Turn(95);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-    //mRP->ColorDetect(0);
-    // mRP->Turn(0);
-    //while(1){
-    //mRP->ColorDetect(0);
-    //mRP->Turn(-120);
-    //mRP->ColorDetect(0);
-    //mRP->Turn(-60);
-    //}
+    
 }
 
 void Scenario::RGB2HSV(void){
@@ -316,8 +103,183 @@ void Scenario::RGB2HSV(void){
 }
 
 void Scenario::TEST(void){
-    //mein
     // スタート
-    //mRP->set_pid_params(0.00, 0.5, 0.0); //0.4
-    //mRP->run_pid(0, 30, 50);
+      mRP->set_pid_params(0.00, 0.5, 0.0); //0.4
+      mRP->run_pid(0, 30, 50);
+   
+     mRP->set_pid_params(1.0, 0.2, 0.08);
+     mRP->run_pid(0, 30, 250);
+     ev3_speaker_play_tone(NOTE_A4, 300);
+
+     // mRP->move(20, 0, 5);
+    
+     mRP->set_pid_params(1.3, 0.3, 0.05);
+     mRP->run_pid(0, 20, 600); //800
+     ev3_speaker_play_tone(NOTE_A4, 300);
+
+     mRP->set_pid_params(1.0, 0.5, 0.01); //0.8,0.2,0.006  1.0,0.5,0.01
+     // mRP->run_pid(0, 10, 560);//550
+     ev3_speaker_play_tone(NOTE_A4, 300);
+    // mRP->set_pid_params(1.0, 1.7, 0.01);
+     mRP->ColorDetect(0);
+     ev3_speaker_play_tone(NOTE_A4, 300);
+        mRP->move(0, 0, 0); //degug
+        ext_tsk();//debug
+        DoPuzzle();
+
+
+    
+}
+
+void Scenario::TEST2(void){
+
+
+}
+
+
+
+
+FILE *sfp;
+
+
+void Scenario::DoPuzzle(){
+
+sfp = fopen("DoPuzzle_log.txt", "w");
+
+fprintf(sfp, "DP1\n");
+
+    //パズル侵入
+    mRP->reset_pid_params();
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->set_pid_params(1.0, 0.7, 0.01);//0.4, 0.15, 0.03
+    //mRP->SetArmAngle(80, -20); //-20
+    mRP->ColorDetect(0);
+
+    // mRP->move(0, 0, 0); //degug
+    // ext_tsk();//debug
+
+    mRP->move(-10, 0, 120);
+    
+    mRP->reset_pid_params();
+   
+    mRP->set_pid_params(1.0, 0.5, 0.01);
+
+
+    
+    //0.4, 0.5, 0.03
+    //mRP->ColorDetect(0);
+
+    
+
+    //入口選択
+//    block_ptn = mBArea->select(10000);
+//    block_ptn = mBArea->select();
+	  block_ptn = selected_result;
+
+    //配列の3番目から入るリングを取得           変更20180722
+    if (result[block_ptn].orders[2] == 8){   // 変更20180722
+        mRP->ColorDetect(0);
+    // } else {
+        mRP->TurnR(30);
+        mRP->LineDetect(1);
+        mRP->ColorDetect(0);
+
+    }
+
+    //ここからパズル（予定
+    //Block()が実際に動作し、並べ終わった後
+    //ゴールエリアまでの距離を返す(int)
+    int goalDist = Block();
+
+    if(goalDist != 0){
+	    //黒線を探しブロックエリアから脱出
+	    mRP->LineDetect(0);
+
+	    //PIDを使い、車庫前まで移動
+	    mRP->set_pid_params(1.8, 0.34, 0.1);    //1.5, 0.24, 0.1
+	    mRP->run_pid(16, 40, goalDist);
+
+	    mRP->Chusya();
+	}
+}
+
+
+int Scenario::Block(void){
+
+     fprintf(sfp, "Block1\n");
+
+     fclose(sfp);
+
+    //mRP->SetArmAngle(30, -30);  //pwm, angle 30 -20
+    //mRP->set_pid_params(0.4, 0.1, 0.0);   //0.4 0.1 0
+    //mRP->ColorDetect(0);
+    //mRP->Turn(-90);
+    int i = 3;
+    char time[30];
+    // iは3づつ増える
+    // orders[0]には全体の長さの３の倍数になってる
+    while (i < result[block_ptn].orders[0] - 3){
+        switch(result[block_ptn].orders[i]){
+            case 110:   //TURN
+                  ev3_speaker_play_tone(NOTE_AS4, 300);
+                sprintf(time,"Turn :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
+                ev3_lcd_draw_string(time,0,60);
+                mRP->Turn(result[block_ptn].orders[i + 1]);
+                break;
+            case 111:   //TURN_BLOCK
+                  ev3_speaker_play_tone(NOTE_D5, 300);
+                sprintf(time,"Turn_B :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
+                ev3_lcd_draw_string(time,0,60);
+                mRP->TurnWithBlock(result[block_ptn].orders[i + 1]);
+                break;
+            case 112:   //FORWARD
+                  ev3_speaker_play_tone(NOTE_F5, 300);
+                sprintf(time,"Forward :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
+                ev3_lcd_draw_string(time,0,60);
+                mRP->ColorDetect(0);
+                break;
+            case 113:   //FORWARD_BLOCK
+                 ev3_speaker_play_tone(NOTE_A5, 300);
+                sprintf(time,"Forward_B :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
+                ev3_lcd_draw_string(time,0,60);
+                if (result[block_ptn].orders[i + 2])
+                    mRP->ColorDetect(0);
+                else
+                    mRP->move(22, -2, 230);
+                break;
+            case 114:   //RELEASE
+                  ev3_speaker_play_tone(NOTE_C6, 300);
+                sprintf(time,"Release :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
+                ev3_lcd_draw_string(time,0,60);
+                (result[block_ptn].orders[i + 2]) ? mRP->Release(0) : mRP->Release(1);
+                break;
+            default:    //END
+                  ev3_speaker_play_tone(NOTE_B6, 300);
+                sprintf(time,"ERROR! :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
+                ev3_lcd_draw_string(time,0,60);
+                break;
+        }
+        i = i + 3;
+        if (wait_event())   ext_tsk();
+    }
+
+    if (result[block_ptn].orders[i] == 120){
+    		return 0;
+    } else if(result[block_ptn].orders[i+1] > 300){ //298 or 317
+        return 450;
+    } else {
+        return 560;
+    } 
+}
+
+void Scenario::L_SHORT(){
+    //b_area->test2(gBT->get_bt());
+    // Lコース
+    // スタート
+    //mRP->TurnR(90);
+    mRP->SetArmAngle(30, -30);  //pwm, angle
+    mRP->set_pid_params(0.6, 0.1, 0.05);
+
+    mRP->ShortCut();
+    DoPuzzle();
 }
