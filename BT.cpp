@@ -26,6 +26,7 @@ BT::BT() {
 int BT::open(void)
 {
 	bt = ev3_serial_open_file(EV3_SERIAL_BT);
+    return 0;
 }
 
 void BT::recv_cmd(void)
