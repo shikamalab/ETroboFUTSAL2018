@@ -7,7 +7,7 @@ int selected_result;
 Result result[24];
 
 /* the first figure is the square id, while other
-   figures are block id sorted by color order */
+   figures are area id sorted by color order */
 signed char square[][5] = {
 	{ 0, 4, 5, 1, 0},		// square 0
 	{ 1, 2, 5, 1, 6},		// square 1
@@ -27,7 +27,7 @@ signed char power_blk[][3] = {
 	{ 3, 4, 9 },
 	{ 4, 5, 10 },
 	{ 5, 1, 4 },
-	{ 6, 2, 5},
+	{ 6, 2, 5 },
 	{ 7, 5, 8 },
 	{ 8, 6, 9 },
 };
@@ -60,7 +60,7 @@ void Block_area::make_dict()
 				if (k == i || k == j) continue;
 				for (l = 2; l <= N_BLK; ++l) {
 					if ( l == i || l == j || l == k) continue;
-					//int sum = i + j + k + l;
+					int sum = i + j + k + l;
 					//printf("n = %2d sum = %2d   %d %d %d %d\n", n, sum, i, j, k, l);
 					dict[n][0] = -1; dict[n][1] = i; dict[n][2] = j; dict[n][3] = k; dict[n][4] = l;
 					++n;
@@ -355,8 +355,8 @@ int Block_area::move_four_blocks_to_squares(int pblk) {
 				//printf("move_blocks_to_squares: power_blk = %d square = %d order = %d res = %d distance= %d\n", pblk, sq, n, res, path.get_distance());
 				if (min > path.get_distance()) {	
 					min = path.get_distance();
-					min_square = sq;
-					min_order = i;
+					min_target = sq;
+					min_order = n;
 					//printf("min_update: min_order= %d\n", min_order);
 					path.p_copy(pdata, min_order);
 				}
@@ -618,9 +618,9 @@ int Block_area::issue_robot_orders(int data[])
 	orders[1] = entry_ring;
 	orders[2] = data[6];
 	for (i = 0; i < orders[0]; i += 3) {
-		printf("%d %d %d ", orders[i], orders[i + 1], orders[i + 2]);
+		fprintf(fp, "%d %d %d ", orders[i], orders[i + 1], orders[i + 2]);
 	}
-	printf("\n\n");
+	fprintf(fp, "\n\n");
 
 	return 0;
 }
@@ -664,7 +664,7 @@ void Block_area::test4(int pb, int nb, int ng, int ny, int nr)
 	fclose(fp);
 }
 
-// コードを与えてすべての色ブロックの配置の場合の経路を計算
+// コードを与えて	４ブロックに対する色割り当ての経路を計算
 void Block_area::test5(int code)
 {
 	int j, k, flag, b_loc[5], dist;
@@ -679,29 +679,42 @@ void Block_area::test5(int code)
 	fprintf(fp, "]\n"); 
 		
 	for (j = 0; j < 24; ++j) {
-		flag = 0;
-		result[j].distance = INT_MAX_B;
-		for (k = 0; k < 4; ++ k) { // k=0,1,2,3
+		for (k = 0; k < 4; ++ k) { // k = 0,1,2,3
 			int dc = dict[j][k + 1];
 			int rg = ring[b_loc[k]].get_color();
 			if (dc == rg) {
-				flag = 1; break;
+				flag = 1; break; //	置き場とブロックの色が同じ場合は排除する
 			}
 			//printf("j = %d dict = %d ring_c= %d\n", j, dc, rg); 
 			init_location[dict[j][k + 1]] = b_loc[k]; 
 		}
 		if (flag) { flag = 0; continue; }
-		//if (init_location[2] != 8) continue;
+		//if (init_location[2] != 8) continue; // 地区大会では青ブロックの初期置き場は8番
 		//if (ring[init_location[3]].get_color() == ring[init_location[4]].get_color() && ring[init_location[4]].get_color() == ring[init_location[5]].get_color()) continue;
 
-		printf("init_loc_id= %d ", j);
+		fprintf(fp, "rn= %d  init_loc_id= %d [B,G,Y,R] = [ ", rn, j);
+		for (k = 0; k < 4; ++k) {
+			fprintf(fp, "%d ", init_location[k + 2]);
+		}
+		fprintf(fp, "]\n");
 		dist = INT_MAX_B;
-		dist = move_four_blocks_to_squares(b_loc[4]);
+		//dist = move_four_blocks_to_squares(b_loc[4]);
+		dist = move_four_blocks_to_targets(b_loc[4]);
 
 		if (dist < INT_MAX_B) {
-			//printf("min_order= %d\n", min_order);
+			fprintf(fp, "min_order= %d [ ", min_order);
+			for (k = 1; k < 5; ++k) {
+				fprintf(fp, "%d ", dict[min_order][k]);
+			}
+			fprintf(fp, "]\n");
+			fprintf(fp, "min_target= %d [ ", min_target);
+			for (k = 0; k < 4; ++k) {
+				fprintf(fp, "%d ", target_tb[min_target][k]);
+			}
+			fprintf(fp, "]\n");
 			fprintf(fp, "distance= %d no_hops= %d cnt2= %d pdata[3]= %d\n", pdata[0], pdata[1], pdata[2], pdata[3]);
-			for (k = 5; k <= 12; ++k)
+			//for (k = 5; k < pdata[2]; ++k)
+			for (k = 5; k < pdata[2]; ++k)
 				fprintf(fp, "path[%d]= %d ", k, pdata[k]);
 			fprintf(fp, "\n");
 			issue_robot_orders(pdata);
@@ -716,33 +729,124 @@ void Block_area::test5(int code)
 			++rn;
 		}
 	}
-	fprintf(fp, "rn= %d\n", rn);
 	k = 0;
-	int i;
 	while (1) {
-		fprintf(fp, "k= %d distance= %d\n", k, result[k].distance);
 		if (result[k].distance == INT_MAX_B) break;
-		//result[k].show();
-		for (i = 0; i < 9; ++i) {
-			fprintf(fp, "orders[%d]= %d ", i, result[k].orders[i]);
-		}
-		fprintf(fp, "\n");
-		k++;
+		result[k++].show();
 	}
 	fclose(fp);
 }
 
-void Block_area::test6(int b, int g, int y, int r)
+void Block_area::test6(void)
 {
-	selected_result = select(b, g, y, r); // 色ブロックの配置でresultを選択
+	selected_result = select(8, 12, 0, 4); // 色ブロックの配置でresultを選択
 	printf("selected_result= %d\n", selected_result);
 }
 
-/*
+/* パワーブロックコードからパワースポットの可能な組み合わせを記憶する target_tb[8] を生成する*/
+void Block_area::make_target_table(int pb_code)
+{
+	int i, j, sq, sq_i, area;
+	int target_cl[4][2];
+	int target_n[4];
+
+	for (i = 0; i < 4; ++i) {
+		target_cl[i][0] = target_cl[i][1] = -1;
+		target_n[i] = 0;
+	}
+	for (i = 1; i <= 2; ++i) {
+		sq = power_blk[pb_code][i];
+		printf("pb_code= %d square_id= %d\n", pb_code, sq);
+		for (sq_i = 0; sq_i <= 8; ++sq_i) {
+			if (square[sq_i][0] == sq) break;
+		}
+		for (j = 1; j <= 4; ++j) {
+			if (target_n[j - 1]++ == 0)
+				target_cl[j - 1][0] = square[sq_i][j];
+			else if (target_cl[j - 1][0] != square[sq_i][j]) {
+				target_cl[j - 1][1] = square[sq_i][j];
+				target_n[j - 1] = 2;
+			}
+			else
+				target_n[j - 1] = 1;
+
+			area = square[sq_i][j];
+			printf("area= %d ", area);
+		}
+		printf("\n");
+	}
+	for (i = 0; i < 4; ++i) {
+		printf("i= %d target_cl[0]= %d target_CL[1]= %d target_n= %d\n", i, target_cl[i][0], target_cl[i][1], target_n[i]);
+	}
+	int nb, ng, ny, nr;
+	i = 0;
+	for (nb = 0; nb < target_n[0]; ++nb)
+		for (ng = 0; ng < target_n[1]; ++ng)
+			for (ny = 0; ny < target_n[2]; ++ny)
+				for (nr = 0; nr < target_n[3]; ++nr) {
+					target_tb[i][0] = target_cl[0][nb]; target_tb[i][1] = target_cl[1][ng]; target_tb[i][2] = target_cl[2][ny]; target_tb[i][3] = target_cl[3][nr];
+					//printf("%d b= %d g= %d y= %d r= %d\n", i++, target_cl[0][nb], target_cl[1][ng], target_cl[2][ny], target_cl[3][nr]);
+					++i;
+				}
+
+	for (i = 0; i < 8; ++i) {
+		printf("%d b= %d g= %d y= %d r= %d\n", i, target_tb[i][0], target_tb[i][1], target_tb[i][2], target_tb[i][3]);
+	}
+	printf("\n");
+}
+
+/* 4ブロックをパワースポットの可能な組み合わせを記憶する target_tb[8] に移動する最短経路を求める。*/
+int Block_area::move_four_blocks_to_targets(int pblk)
+{
+	int n, res, i, j;
+	int min = INT_MAX_B;
+	printf("pblk= %d init_loc[2:5]= [ ", pblk);
+	for (i = 2; i < 6; ++i)
+		printf("%d ", init_location[i]);
+	printf("]\n");
+	make_target_table(pblk);
+
+	for (j = 0; j < 8; ++j) {
+		for (i = 0; i < 4; ++i) { // i = 0,1,2,3
+			target_location[i + 2] = target_tb[j][i];
+			//printf("target_location[%d]= %d ", i, target_location[i + 1]);
+		}
+		//printf("\n");
+		for (n = 0; n < 24; ++n) { // for all possible orders
+			for (i = 0; i < 16; ++i)
+				ring[i].set_bflag(0);
+			for (i = 2; i < 6; ++i)
+				ring[init_location[i]].set_bflag(1);
+			res = move_four_blocks(n);
+			if (res < INT_MAX_B) {
+				//printf("move_blocks_to_squares: power_blk = %d square = %d order = %d res = %d distance= %d\n", pblk, sq, n, res, path.get_distance());
+				if (min > path.get_distance()) {
+					min = path.get_distance();
+					min_target = j; // 最短経路となる target_tb のインデックス //
+					min_order = n; // 最短経路となる 順序 のインデックス //
+					//printf("min_update: min_order= %d\n", min_order);
+					path.p_copy(pdata, min_order);
+				}
+			}
+		}
+	}
+	return(min);
+}
+
+
+void Block_area::test7(void)
+{
+	int i;
+
+	for (i = 1; i <= 8; ++i) {
+		make_target_table(i);  // i is the power block id
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	Block_area b_area;
-	int i;
+	//int i;
 
 	//b_area.show_rings();
 	//b_area.test1();
@@ -751,8 +855,8 @@ int main(int argc, char *argv[])
 	//b_area.test4(2, 8, 4, 12, 9);
 	//b_area.test4(8, 8, 1, 2, 3);
 	//b_area.test4(4, 8, 15, 14, 13); // パワーブロック4、青8、緑15、黄14、赤13
-	b_area.test5(18628);
-	b_area.test6();
+	b_area.test5(18628); // 18628, 96722, 158435, 228340
+	//b_area.test6();
+	//b_area.test7();
 	return 0;
 }
-*/  

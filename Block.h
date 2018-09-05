@@ -88,17 +88,17 @@ private:
 	int init_location[6];
 	int target_location[6];
 	int min_order;
-	int min_square;
+	int min_target;
 	int orders[300];
 	int o_n;
 	int entry_ring;
 	FILE *fp;
+	int target_tb[8][4];
 public:
 	int pdata[P_SIZE];
 	Block_area(void) {
 		make_dict();
 		init_rings();
-		//remove("test5_log.txt");
 	}
 	void set_order(int ord, int par1, int par2) {
 		orders[o_n++] = ord; orders[o_n++] = par1; orders[o_n++] = par2;
@@ -114,6 +114,8 @@ public:
 	int move_one_block(int start, int dest1, int dest2, int *n, int *dist);
 	int move_four_blocks(int n);
 	int move_four_blocks_to_squares(int n);
+	void make_target_table(int n);
+	int move_four_blocks_to_targets(int n);
 	int angle(int current, int prev, int next, int *dist, int *ln);
 	int issue_robot_orders(int data[]);
 	int select(int m0, int m1, int m2, int m3);
@@ -122,7 +124,8 @@ public:
 	void test3(void);
 	void test4(int pb, int nb, int ng, int ny, int nr);
 	void test5(int code);
-	void test6(int, int, int, int);
+	void test6(void);
+	void test7(void);
 };
 
 #endif

@@ -144,7 +144,7 @@ void main_task(intptr_t unused)
 
 	// ブロック並べ試験用 2018年7月18日 鹿間
 	gB_area->test5(18628);
-	gB_area->test6(8, 12, 0, 4);
+	gB_area->test6();
 	//selected_result = 2;
 
     // スタート待機
