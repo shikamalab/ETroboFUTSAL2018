@@ -26,7 +26,8 @@ BT::BT() {
 int BT::open(void)
 {
 	bt = ev3_serial_open_file(EV3_SERIAL_BT);
-    return 0;
+	if (bt == NULL) return -1;
+	else return 0;
 }
 
 void BT::recv_cmd(void)
@@ -38,8 +39,9 @@ void BT::recv_cmd(void)
 		i = 0; res = 0;
 		while (1)
 		{
-			//fputc(ch, bt);
-			if ((ch = fgetc(bt)) == '\n') break;
+			ch = fgetc(bt);
+			fputc(ch, bt);
+			if (ch == '\n') break;
 			else if (ch == '\r') break;
 			if (i == 0) { 
 				res = ch;
