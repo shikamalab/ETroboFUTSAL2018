@@ -94,6 +94,7 @@ public:
 	int GetBlockColor();
 	void AcrossTheLine(int area, int dist);
 	void DigitalAns(void);
+	void AnalogAns(void);
 	void banzai(void);
 	void SetArmAngle(int pwm_Arm, int32_t angle);
 	void SetTailAngle(int pwm_Tail, int angel);
@@ -110,6 +111,9 @@ public:
 	int colorflag;
 	int Digital = 8;
 	int Analog = 8;
+	int White[9] = {0};
+	int Black[9] = {0};
+	int box_i = 0;
 };
 
 #endif

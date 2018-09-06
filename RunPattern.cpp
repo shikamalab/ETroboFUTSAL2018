@@ -1189,6 +1189,105 @@ void RunPattern::DigitalAns(){
 	}
 }
 
+void RunPattern::AnalogAns(){
+	int state = 0;
+	int count = 4;
+	int change= 0;
+	int color;
+	int omegastate = 0;//オメガステータス　０・・・横　１・・・斜め　２・・・縦 
+
+	int start_dist = mRloc->distance;
+	while (1) {
+		move(20, 0);
+		switch(omegastate){
+			case 0:
+				if(mRloc->distance - start_dist > 260){
+					TurnR(135);
+					start_dist = mRloc->distance;
+					omegastate = 1;
+				}
+				break;
+			case 1:
+				if(mRloc->distance - start_dist > 200){
+					TurnR(135);
+					start_dist = mRloc->distance;
+					omegastate = 2;
+				}
+				break;
+			case 2:
+				if(mRloc->distance - start_dist > 300){
+					state = 3;
+				}
+				break;
+			default:
+				break;
+		}
+		if (state == 0) {//白検知
+			color = mHSV->GetColorNumber();
+			switch (color) {
+				case 0:
+					change = 0;
+					count++;
+					break;
+				case 1:
+					if(change++ == 4){
+						change = 0;
+						state = 1;
+						if(count >= 33){
+							White[box_i] = White[box_i] + count;
+						}else if(box_i != 0){
+							Black[box_i - 1] = Black[box_i - 1] + count;
+						}
+						count = 4;
+					}
+					break;
+				case 2:	// RED
+				case 3: // GREEN
+				case 4: // BLUE
+				case 5: // YELLOW
+				case 6:	//WOOD
+					break;
+				default:
+					count = 0;
+					break;
+			}
+		}
+		else if (state == 1){//黒検知
+			color = mHSV->GetColorNumber();
+			switch (color) {
+				case 0:
+					if(change++ == 4){
+						change = 0;
+						state = 0;
+						if(count >= 33){
+							Black[box_i] = Black[box_i] + count;
+							box_i++;
+						}else{
+							White[box_i] = White[box_i] + count;
+						}
+						count = 4;
+					}
+					break;
+				case 1:
+					change = 0;
+					count++;
+					break;
+				case 2:	// RED
+				case 3: // GREEN
+				case 4: // BLUE
+				case 5: // YELLOW
+				case 6:	//WOOD
+					break;
+				default:
+					count = 0;
+					break;
+			}
+		}
+		else break;
+	}
+}
+
+
 void RunPattern::banzai(){
 	mMotorControl->wheels_reset();
 	while (count++ < 100){
@@ -1307,23 +1406,49 @@ int RunPattern::RGB2HSV(void){
 void RunPattern::run_hsv(void){
 	int color;
 	int count =0;
-	while(1){
+	int state = 0;
+
+	while(1){//緑検知
 		move(15,0);
 		color = mHSV->GetColorNumber();
-		if(color == 3){
-			if(count++ > 5) break;
+		switch(color){
+			case 0:
+			case 1:
+				count = 0;
+				break;
+			case 2:
+				break;
+			case 3:
+				if(++count == 4){
+					state = 1;
+				}
+				break;
+			default:
+				break;
 		}
+		if(state == 1) break;
 	}
-	count = 0;
+	state = 0;
 	ev3_speaker_play_tone(NOTE_A4, 300);
-	while(1){
+	while(1){//白検知
 		move(15,0);
 		color = mHSV->GetColorNumber();
-		if(color == 0){
-			if(count++ > 1) break;
+		switch(color){
+			case 0:
+				if(++count == 4){
+					state = 1;
+				}
+				break;
+			case 1:
+			case 2:
+			case 3:
+				count = 0;
+				break;
+			default:
+				break;
 		}
+		if(state == 1) break;
 	}
-	mHSV->Convert(3, flag_NEO);
 }
 
 void RunPattern::RailDetect(int area, int dist){
