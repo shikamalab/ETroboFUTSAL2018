@@ -19,53 +19,55 @@ void Scenario::R(){
     mRP->setStartTime();
     // Rコース(未完成)
     // スタート
-    mRP->set_pid_params(0.00, 0.5, 0.0);
+    mRP->set_pid_params(0.00, 0.01, 0.0);
     mRP->run_pid(0, 30, 50);
 
     // for CS
     // // 直進1
-    //mRP->set_pid_params(1.0, 0.03, 0.09);
-   // mRP->run_pid(0, 60, 2000);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->set_pid_params(1.0, 0.03, 0.09);
+    mRP->run_pid(0, 60, 2000);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // カーブ1
-    //mRP->set_pid_params(1.6, 0.03, 0.09);
-    //mRP->run_pid(0, 55, 1820);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->set_pid_params(1.76, 0.03, 0.09);
+    mRP->run_pid(0, 55, 1820);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // 直進2
-    //mRP->set_pid_params(1.0, 0.03, 0.09);
-    //mRP->run_pid(0, 55, 450);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->set_pid_params(1.0, 0.03, 0.09);
+    mRP->run_pid(0, 55, 450);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // カーブ2
-    //mRP->set_pid_params(1.6, 0.03, 0.13);
-    //mRP->run_pid(0, 45, 550);
+    mRP->set_pid_params(1.6, 0.03, 0.13);
+    mRP->run_pid(0, 45, 550);
     // カーブ3
-    //mRP->set_pid_params(2.05, 0.03, 0.13);
-    //mRP->run_pid(0, 45, 650);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->set_pid_params(2.07, 0.03, 0.10);
+    mRP->run_pid(0, 45, 650);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // 直進3
-   // mRP->set_pid_params(1.0, 0.03, 0.075);
-   // mRP->run_pid(0, 50, 700);
-   /// ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->set_pid_params(1.0, 0.03, 0.075);
+    mRP->run_pid(0, 50, 700);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // カーブ4
-    //mRP->set_pid_params(1.8, 0.03, 0.13);
-    //mRP->run_pid(0, 45, 1200);
+    mRP->set_pid_params(1.76, 0.03, 0.13);
+    mRP->run_pid(0, 45, 1200);
     // 直進4
-    //mRP->set_pid_params(1.0, 0.03, 0.075);
-    //mRP->run_pid(0, 50, 2700);
+    mRP->set_pid_params(1.0, 0.03, 0.09);
+    mRP->run_pid(0, 50, 2570);
+    mRP->set_pid_params(0.9, 0.03, 0.075);
+    mRP->run_pid(0, 20, 600);
     // 灰色
-    //mRP->move(40, 0, 150);
+    mRP->run_pid(2, 30, 150);
     // 灰色後直線1
     mRP->set_pid_params(0.35, 0.15, 0.08);
     mRP->run_pid(0, 30, 250);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // 灰色後カーブ2
     mRP->set_pid_params(0.7, 0.15, 0.05);
     mRP->run_pid(0, 20, 650);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // 灰色後直線2
     mRP->set_pid_params(1.0, 0.15, 0.01);
     mRP->run_pid(0, 10, 300);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // 無理やりエッジ切り替え
     mRP->move(10, 2, 10);
     // 灰色後直線3
@@ -149,26 +151,26 @@ void Scenario::TEST(void){
       mRP->set_pid_params(0.00, 0.5, 0.0); //0.4
       mRP->run_pid(0, 30, 50);
    
-     mRP->set_pid_params(1.0, 0.2, 0.08);
-     mRP->run_pid(0, 30, 250);
-     ev3_speaker_play_tone(NOTE_A4, 300);
-
-     // mRP->move(20, 0, 5);
-    
-     mRP->set_pid_params(1.3, 0.3, 0.05);
-     mRP->run_pid(0, 20, 600); //800
-     ev3_speaker_play_tone(NOTE_A4, 300);
-
-     mRP->set_pid_params(1.0, 0.5, 0.01); //0.8,0.2,0.006  1.0,0.5,0.01
-     // mRP->run_pid(0, 10, 560);//550
-     ev3_speaker_play_tone(NOTE_A4, 300);
-    // mRP->set_pid_params(1.0, 1.7, 0.01);
-     mRP->ColorDetect(0);
-     ev3_speaker_play_tone(NOTE_A4, 300);
-        mRP->move(0, 0, 0); //degug
-        ext_tsk();//debug
-        DoPuzzle();
-
+      mRP->set_pid_params(0.35, 0.15, 0.08);
+    mRP->run_pid(0, 30, 250);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    // 灰色後カーブ2
+    mRP->set_pid_params(0.7, 0.15, 0.05);
+    mRP->run_pid(0, 20, 650);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    // 灰色後直線2
+    mRP->set_pid_params(1.0, 0.15, 0.01);
+    mRP->run_pid(0, 10, 300);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+    // 無理やりエッジ切り替え
+    mRP->move(10, 2, 10);
+    // 灰色後直線3
+    mRP->set_pid_params(1.0, 0.15, 0.01);
+    mRP->run_pid(1, 10, 340);
+    ev3_speaker_play_tone(NOTE_A4, 300);
+   
+    // パズル侵入
+    DoPuzzle();
 
     
 }
@@ -205,7 +207,7 @@ fprintf(sfp, "DP1\n");
     mRP->reset_pid_params();
    
     mRP->set_pid_params(0.25, 0.15, 0.03);
-    ev3_speaker_play_tone(NOTE_A4, 300);
+    //ev3_speaker_play_tone(NOTE_A4, 300);
 
 
     
@@ -222,12 +224,12 @@ fprintf(sfp, "DP1\n");
     //配列の3番目から入るリングを取得           変更20180722
          if (result[block_ptn].orders[2] == 8){   // 変更20180722
         mRP->ColorDetect(0);
-    } else if (result[block_ptn].orders[2] == 4){
-        mRP->TurnL(30);
-        mRP->LineDetect(1);
-        mRP->ColorDetect(0);
-        }
-    else (result[block_ptn].orders[2] == 12); {
+    } //else if (result[block_ptn].orders[2] == 4){
+        //mRP->TurnL(30);
+       // mRP->LineDetect(1);
+        //mRP->ColorDetect(0);
+        //}
+    else{ //(result[block_ptn].orders[2] == 12); {
         mRP->TurnR(30);
         mRP->LineDetect(1);
         mRP->ColorDetect(0);
@@ -246,12 +248,11 @@ fprintf(sfp, "DP1\n");
         //ext_tsk();//debug
 	    //PIDを使い、車庫前まで移動
 	    mRP->set_pid_params(1.0, 0.5, 0.01);    //1.5, 0.24, 0.1
-	    mRP->run_pid(16, 10, goalDist);
+	    mRP->run_pid(2, 10, goalDist);
 
 	    mRP->Chusya();
 	}
 }
-
 
 int Scenario::Block(void){
 
@@ -299,7 +300,7 @@ int Scenario::Block(void){
             case 114:   //RELEASE
                   ev3_speaker_play_tone(NOTE_C6, 300);
                 sprintf(time,"Release :%3d :%2d", result[block_ptn].orders[i + 1], result[block_ptn].orders[i + 2]);
-                ev3_lcd_draw_string(time,0,60);
+                //ev3_lcd_draw_string(time,0,60);
                 (result[block_ptn].orders[i + 2]) ? mRP->Release(0) : mRP->Release(1);
                 break;
             default:    //END
