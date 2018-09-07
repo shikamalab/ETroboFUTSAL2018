@@ -79,7 +79,7 @@ void HSV::Convert(int mode, bool flag_NEO) {
         else if (v > 20)    color = WHITE;
         else                color = GRAY;
     }
-    else if(mode == 4){
+    else if(mode == 4 && flag_NEO == true){
         if (h < 180 && s >40)    color = GREEN;
         else{
             if (s < 40 && v < 13) color = BLACK;
