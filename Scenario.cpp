@@ -19,53 +19,55 @@ void Scenario::R(){
     mRP->setStartTime();
     // Rコース(未完成)
     // スタート
-    mRP->set_pid_params(0.00, 0.5, 0.0);
+    mRP->set_pid_params(0.00, 0.01, 0.0);
     mRP->run_pid(0, 30, 50);
 
     // for CS
     // // 直進1
-    //mRP->set_pid_params(1.0, 0.03, 0.09);
-   // mRP->run_pid(0, 60, 2000);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->set_pid_params(1.0, 0.03, 0.09);
+    mRP->run_pid(0, 60, 2000);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // カーブ1
-    //mRP->set_pid_params(1.6, 0.03, 0.09);
-    //mRP->run_pid(0, 55, 1820);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->set_pid_params(1.76, 0.03, 0.09);
+    mRP->run_pid(0, 55, 1820);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // 直進2
-    //mRP->set_pid_params(1.0, 0.03, 0.09);
-    //mRP->run_pid(0, 55, 450);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->set_pid_params(1.0, 0.03, 0.09);
+    mRP->run_pid(0, 55, 450);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // カーブ2
-    //mRP->set_pid_params(1.6, 0.03, 0.13);
-    //mRP->run_pid(0, 45, 550);
+    mRP->set_pid_params(1.6, 0.03, 0.13);
+    mRP->run_pid(0, 45, 550);
     // カーブ3
-    //mRP->set_pid_params(2.05, 0.03, 0.13);
-    //mRP->run_pid(0, 45, 650);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->set_pid_params(2.07, 0.03, 0.10);
+    mRP->run_pid(0, 45, 650);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // 直進3
-   // mRP->set_pid_params(1.0, 0.03, 0.075);
-   // mRP->run_pid(0, 50, 700);
-   /// ev3_speaker_play_tone(NOTE_A4, 300);
+    mRP->set_pid_params(1.0, 0.03, 0.075);
+    mRP->run_pid(0, 50, 700);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // カーブ4
-    //mRP->set_pid_params(1.8, 0.03, 0.13);
-    //mRP->run_pid(0, 45, 1200);
+    mRP->set_pid_params(1.76, 0.03, 0.13);
+    mRP->run_pid(0, 45, 1200);
     // 直進4
-    //mRP->set_pid_params(1.0, 0.03, 0.075);
-    //mRP->run_pid(0, 50, 2700);
+    mRP->set_pid_params(1.0, 0.03, 0.09);
+    mRP->run_pid(0, 50, 2570);
+    mRP->set_pid_params(0.9, 0.03, 0.075);
+    mRP->run_pid(0, 20, 600);
     // 灰色
-    //mRP->move(40, 0, 150);
+    mRP->run_pid(2, 30, 150);
     // 灰色後直線1
     mRP->set_pid_params(0.35, 0.15, 0.08);
     mRP->run_pid(0, 30, 250);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // 灰色後カーブ2
     mRP->set_pid_params(0.7, 0.15, 0.05);
     mRP->run_pid(0, 20, 650);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // 灰色後直線2
     mRP->set_pid_params(1.0, 0.15, 0.01);
     mRP->run_pid(0, 10, 300);
-    //ev3_speaker_play_tone(NOTE_A4, 300);
+    ev3_speaker_play_tone(NOTE_A4, 300);
     // 無理やりエッジ切り替え
     mRP->move(10, 2, 10);
     // 灰色後直線3
@@ -83,44 +85,35 @@ void Scenario::R(){
 void Scenario::L(){
     mRP->set_pid_params(0.0, 0.01, 0.0);    
     mRP->run_pid(0, 30, 50);
-
-    // 直進1
-    mRP->set_pid_params(1.0, 0.03, 0.075);
-    mRP->run_pid(0, 65, 2200);//60
-
-    // 第１コーナー
-    mRP->set_pid_params(1.2, 0.00, 0.1);
-    mRP->run_pid(0, 50, 1800);
-
+	// 直進1
+	mRP->set_pid_params(1.0, 0.03, 0.077);
+	mRP->run_pid(0, 65, 2200);//60
+	// 第１コーナー
+	mRP->set_pid_params(1.2, 0.00, 0.1);
+	mRP->run_pid(0, 50, 1800);
     // 直進2
-    mRP->set_pid_params(1.0, 0.1, 0.09);
-    mRP->run_pid(0, 50, 1600);
-    mRP->set_pid_params(1.0, 0.1, 0.09);
-    mRP->run_pid(0, 45, 150);   //速度余裕有
-    ev3_speaker_play_tone(NOTE_AS4, 300);
-
-    // 第2コーナー
+	mRP->set_pid_params(1.0, 0.1, 0.09);
+	mRP->run_pid(0, 50, 1600);
+	mRP->set_pid_params(1.0, 0.1, 0.09);
+	mRP->run_pid(0, 45, 150);	//速度余裕有
+	ev3_speaker_play_tone(NOTE_AS4, 300);
+	// 第2コーナー
     mRP->set_pid_params(1.8, 0.0, 0.1);
     mRP->run_pid(0, 40, 600);
-
     // 直進3
     mRP->set_pid_params(1.0, 0.1, 0.09);
     mRP->run_pid(0, 40, 650);
     ev3_speaker_play_tone(NOTE_AS4, 300);
-
     // 第3コーナー Ｄの値０．０６元の Ｉの下の値０．０５
-    mRP->set_pid_params(1.83, 0.1, 0.075);
+    mRP->set_pid_params(1.84, 0.1, 0.075);  // 1.83, 0.1, 0.075
     mRP->run_pid(0, 40, 750);
-
     // 直進4
-    mRP->set_pid_params(1.1, 0.1, 0.08);
-    mRP->run_pid(0, 50, 200);
-
-    mRP->set_pid_params(1.1, 0.1, 0.08);
-    mRP->run_pid(0, 60, 200);
-
-    mRP->set_pid_params(1.1, 0.1, 0.08);
-    mRP->run_pid(0, 65, 2100);
+    mRP->set_pid_params(1.0, 0.1, 0.09);
+	mRP->run_pid(0, 50, 200);
+	mRP->set_pid_params(1.0, 0.1, 0.09); //1.1,  0.1,  0.08
+	mRP->run_pid(0, 60, 200);
+	mRP->set_pid_params(1.0, 0.1, 0.09);
+	mRP->run_pid(0, 65, 2100);
     //ゴール後
     //mRP->set_pid_params(1.7, 0.00, 0.1);
     //mRP->run_pid(0, 40, 570);
