@@ -271,14 +271,14 @@ void RunPattern::TurnR180(){
 	int startAngle = mRloc->omega_d;
 	while(1){
 		move(4, 25);//3,17 or 4,25
-		if((mRloc->omega_d - startAngle) >= 192 ){	//93yoyu-
+		if((mRloc->omega_d - startAngle) >= 194 ){	//93yoyu-
 			break;
 		}
 	}
 }
 
 void RunPattern::TurnL180(){
-	int startAngle = mRloc->omega_d - 192;	// 誤差調整
+	int startAngle = mRloc->omega_d - 194;	// 誤差調整
 	while(1){
 		move(-4, -25);//-3,-17 or -4,-25
 		if((mRloc->omega_d - startAngle) <= 0 ){
@@ -807,6 +807,34 @@ void RunPattern::LineDetect(int mode){
 		if (wait_event())	ext_tsk();
 	}
 }
+void RunPattern::LineDetectAI(){
+	int color;
+	int count =0;
+	int state = 0;
+
+	move(20, 0, 100);
+	while(1){//検知
+		move(15,0);
+		color = mHSV->GetColorNumber();
+		switch(color){
+			case 0:
+				count = 0;
+				break;
+			case 1:
+				if(++count == 3){
+					state = 1;
+				}
+				break;
+			case 2:
+			case 3:
+				count = 0;
+				break;
+			default:
+				break;
+		}
+		if(state == 1) break;
+	}
+}
 
 void RunPattern::eyesight(int sonar_distance_cm){
 	target_distance = sonar_distance_cm;
@@ -988,34 +1016,23 @@ void RunPattern::AcrossTheLine(int area, int dist){
 
 	while (1) {
 		if (state == 0) {
-			switch(area){
-				case 0:
-					run_pid(1,25);
-					break;
-				case 1:
-					run_onoff(19);
-					break;
-				default:
-					// run_onoff(25);
-					move(25, 0.0);
-					break;
-			}
+			move(15,0);
 			color = mHSV->GetColorNumber();
 			//100mm手前に来るまで色を読まない
 			switch (color) {
 				case 0:
-				case 1:
-				case 2:	// RED
-				case 3: // GREEN
 					count = 0;
 					break;
-				case 4: // BLUE
+				case 1:
 					if (++count == 3) {//7
+						move(20, 0, 30);
 						start_dist = mRloc->distance;
-						move(60, 0, 150);
-						state = 1;
+						state = 2;
 					}
 					break;
+				case 2:	// RED
+				case 3: // GREEN
+				case 4: // BLUE
 				case 5: // YELLOW
 				case 6:	//WOOD
 				default:
@@ -1027,14 +1044,15 @@ void RunPattern::AcrossTheLine(int area, int dist){
 		else if (state == 1){
 			switch(area){
 				case 0:
-					run_pid(3, 40);
+					run_pid(1, 30);
 					break;
 				case 1:
 					// move(35, -0.45);
-					run_onoff(20);
+					// run_onoff(20);
+					move(10,-1.4);
 					break;
 				default:
-					move(25, -1.4);
+					move(10, -1.4);
 					// run_onoff(20);
 					break;
 			}
@@ -1058,24 +1076,26 @@ void RunPattern::DigitalAns(){
 	int start_dist = mRloc->distance;
 	while(1){
 		if(state == 0){//1番チェック
-			move(-20, 0);
+			move(-10, 0);
 			if(mHSV->GetColorNumber() == 1){
 				flag = 1;
 			}
 			if(start_dist - mRloc->distance >= CENTER_DISTANCE ){//見つからなかった
 				start_dist = mRloc->distance;
 				if(flag == 0){//見つからなかった
+					move(10,0,CENTER_DISTANCE);
 					state = 1;
 				}
 				else if(flag == 1){//見つけた
+					flag = 0;
 					state = 3;
 				}
 			}
 
 		}
 		if(state == 1){//３番チェック
-			move(20, 0);
-			if(mRloc->distance - start_dist >= CENTER_DISTANCE && flag == 0){
+			move(10, 0);
+			if(mRloc->distance - start_dist >= CENTER_DISTANCE){
 				color = mHSV->GetColorNumber();
 				if(color == 1){
 					flag = 1;
@@ -1093,11 +1113,11 @@ void RunPattern::DigitalAns(){
 		}
 		if(state == 2){
 			TurnR90();
-			move(20, 0, CENTER_DISTANCE);
+			move(10, 0, CENTER_DISTANCE);
 			break;
 		}
 		if(state == 3){//位置戻し
-			move(20, 0);
+			move(10, 0);
 			if(mRloc->distance - start_dist >= CENTER_DISTANCE + 30){
 				TurnR90();
 				start_dist = mRloc->distance;
@@ -1105,7 +1125,7 @@ void RunPattern::DigitalAns(){
 			}
 		}
 		if(state == 4){//２番チェック
-			move(20, 0);
+			move(10, 0);
 			color = mHSV->GetColorNumber();
 			if(color == 1){
 				flag = 1;
@@ -1115,13 +1135,14 @@ void RunPattern::DigitalAns(){
 			}
 		}
 		if(state == 5){//位置戻し
-			move(-20, 0, CENTER_DISTANCE);
-			TurnL90();
+			TurnL180();
+			move(10, 0, CENTER_DISTANCE);
+			TurnR90();
 			start_dist = mRloc->distance;
 			state = 6;
 		}
 		if(state == 6){//3番チェック
-			move(20, 0);
+			move(10, 0);
 			color = mHSV->GetColorNumber();
 			if(color == 1){
 				count = 1;
@@ -1153,7 +1174,7 @@ void RunPattern::DigitalAns(){
 			}
 		}
 		if(state == 6){//４番チェック・・・１
-			move(20, 0);
+			move(10, 0);
 			color = mHSV->GetColorNumber();
 			if(color == 1){
 				flag = 1;
@@ -1170,12 +1191,12 @@ void RunPattern::DigitalAns(){
 			}
 		}
 		if(state == 7){
-			move(20, 0);
+			move(10, 0);
 			color = mHSV->GetColorNumber();
 			if(color == 1){
 				flag = 1;
 			}
-			if(mRloc->distance - start_dist >= CENTER_DISTANCE && flag == 0){
+			if(mRloc->distance - start_dist >= CENTER_DISTANCE){
 				if(flag == 0){//見つからなかった
 					Digital = 5;
 					break;
@@ -1201,7 +1222,7 @@ void RunPattern::AnalogAns(){
 		move(20, 0);
 		switch(omegastate){
 			case 0:
-				if(mRloc->distance - start_dist > 260){
+				if(mRloc->distance - start_dist > 280){
 					TurnR(135);
 					start_dist = mRloc->distance;
 					omegastate = 1;
@@ -1287,6 +1308,36 @@ void RunPattern::AnalogAns(){
 	}
 }
 
+void RunPattern::AnalogSep(){
+	if(White[0] < 50){//4
+		Analog = 4;
+	}else if(White[0] < 80){//0 3 5 6
+		if(White[1] < 100){//0 6
+			if(White[4] > 160){
+				Analog = 6;
+			}else{
+				Analog = 0;
+			}
+		}else{//3 5
+			if(White[1] > 300){
+				Analog = 3;
+			}else{
+				Analog = 5;
+			}
+
+		}
+	}else if(White[0] < 150){//1 4 7
+		if(White[1] > 350){
+			Analog = 7;
+		}else if(White[1] >220){
+			Analog = 1;
+		}else{
+			Analog = 4;
+		}
+	}else{//2
+		Analog = 2;
+	}
+}
 
 void RunPattern::banzai(){
 	mMotorControl->wheels_reset();

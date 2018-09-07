@@ -93,10 +93,10 @@ void EvLog::input(int x1, int x2, int x3, int x4)
 	// data[n].bright = (int) mHSV->getBrightness();
 	data[n].bright = 0;
 	data[n].distance = (int) mRloc->distance;
-	data[n].x[0] = x1;
-	data[n].x[1] = x2;
-	data[n].x[2] = x3;
-	data[n].x[3] = x4;
+	data[n].x[0] = (int) mRunPattern->White[0];
+	data[n].x[1] = (int) mRloc->omega_d;
+	data[n].x[2] = (int) mRunPattern->Digital;
+	data[n].x[3] = (int) mRunPattern->Analog;
 	++wcount;
 }
 
@@ -132,10 +132,10 @@ void EvLog::input(int cflag, int x1, int x2, int x3, int x4)
 	// data[n].bright = (int) mHSV->getBrightness();
 	data[n].bright = 0;
 	data[n].distance = (int) mRloc->distance;
-	data[n].x[0] = x1;
-	data[n].x[1] = x2;
-	data[n].x[2] = x3;
-	data[n].x[3] = x4;
+	data[n].x[0] = (int) mRunPattern->White[0];
+	data[n].x[1] = (int) mRloc->omega_d;
+	data[n].x[2] = (int) mRunPattern->Digital;
+	data[n].x[3] = (int) mRunPattern->Analog;
 	++wcount;
 }
 

@@ -88,6 +88,7 @@ public:
 	void Chusya();
 	void ShortCut();
 	void LineDetect(int);
+	void LineDetectAI(void);
 	void setStartTime() {start_time = mClock->now();};
 	void eyesight(int sonar_distance_cm);
 	int RingDetect();
@@ -95,6 +96,7 @@ public:
 	void AcrossTheLine(int area, int dist);
 	void DigitalAns(void);
 	void AnalogAns(void);
+	void AnalogSep(void);
 	void banzai(void);
 	void SetArmAngle(int pwm_Arm, int32_t angle);
 	void SetTailAngle(int pwm_Tail, int angel);
@@ -109,8 +111,8 @@ public:
 	bool flag_NEO;
 	int sonar_distance;
 	int colorflag;
-	int Digital = 8;
-	int Analog = 8;
+	int Digital = 5;
+	int Analog = 6;
 	int White[9] = {0};
 	int Black[9] = {0};
 	int box_i = 0;
