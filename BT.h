@@ -23,6 +23,7 @@ class BT {
 	char s[256];
 	char bt_message[MSG_LEN + 1];
 	char bt_log[100][40];
+	int select_flag; // 20180911
 public:
 	int color;
 	int color1;
@@ -36,6 +37,7 @@ public:
 	signed char bt_turn;
 	signed char bt_arm;
 	signed char bt_tail;
+	void stop_select() { select_flag = 0; } // 20180911
 };
 
 #endif /* BT_H_ */

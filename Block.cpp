@@ -144,8 +144,8 @@ void Block_area::init_rings()
 	ring[15].port[2].set(17, 30, 700); // Exit
 
 	ring[16].set_color(0);
-	ring[16].port[0].set(8, 0, 0); ring[16].port[1].set(12, -45, 1000);
-	ring[16].port[2].set(4, 45, 1000);
+	ring[16].port[0].set(8, 0, 0); ring[16].port[1].set(12, -45, 10000);
+	ring[16].port[2].set(4, 45, 5000);
 
 	ring[17].set_color(0);
 }
@@ -233,13 +233,13 @@ int Block_area::find_route_distance(int s, int d, int *n, int *dist)
 	dijkstra(s);
 	if (ring[d].get_distance() == INT_MAX_B) return INT_MAX_B;
 	int p_ring = ring[d].get_prev();
-	//printf("distance= %d   %dâ†", ring[d].get_distance(), d);
+	//printf("distance= %d   %d©", ring[d].get_distance(), d);
 	path.append_ring(d);
 	*dist = ring[d].get_distance();
 	*n = 1;
 	for (p_ring = ring[d].get_prev(); p_ring != s; p_ring = ring[p_ring].get_prev()) {
 		++*n;
-		//printf("%dâ†", p_ring);
+		//printf("%d©", p_ring);
 		path.append_ring(p_ring);
  	}
 	//printf("%d\n", s);
@@ -269,7 +269,7 @@ int Block_area::move_one_block(int start, int dest1, int dest2, int *n, int *dis
 	*n += 1;		// release
 	int x = ring[dest2].get_distance() - ring[ring[dest2].get_prev()].get_distance();
 	*dist += x;
-	//printf("release: %d %dâ†%d\n", x, ring[dest2].get_prev(), dest2);
+	//printf("release: %d %d©%d\n", x, ring[dest2].get_prev(), dest2);
 
 	path.p_init();
 	path.append_ring(ring[dest2].get_prev());
@@ -551,7 +551,7 @@ int Block_area::angle(int current, int prev, int next, int *dist, int *ln)
 	return delt_angle;
 }
 
-// dataã®é…åˆ—ã‹ã‚‰ã‚·ãƒŠãƒªã‚ªã®é…åˆ—orderã‚’ä½œæˆã™ã‚‹ã€‚orderã¯ã‚¯ãƒ©ã‚¹ã®privateãƒ¡ãƒ³ãƒã€ä»–ã®é…åˆ—ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹ã€‚
+// data‚Ì”z—ñ‚©‚çƒVƒiƒŠƒI‚Ì”z—ñorder‚ğì¬‚·‚éBorder‚ÍƒNƒ‰ƒX‚Ìprivateƒƒ“ƒoA‘¼‚Ì”z—ñ‚ÉƒRƒs[‚·‚éB
 int Block_area::issue_robot_orders(int data[])
 {
 	int cur;
@@ -627,22 +627,31 @@ int Block_area::issue_robot_orders(int data[])
 
 int Block_area::select(int m0, int m1, int m2, int m3)
 {
-	int i = 0;
-	while (1) {
-		if (result[i].distance == INT_MAX_B) return -1;
-		if (result[i].b_loc[2] != m0) { ++i; continue; }
-		if (result[i].b_loc[3] != m1) { ++i; continue; }
-		if (result[i].b_loc[4] != m2) { ++i; continue; }
-		if (result[i].b_loc[5] != m3) { ++i; continue; }
-		return i;
+	int i;
+	for (i = 0; i < 24; ++i) {
+		if ((result[i].b_loc[2] == m0) && (result[i].b_loc[3] == m1) && 
+			(result[i].b_loc[4] == m2) && (result[i].b_loc[5] == m3)) return i;
 	}
+
+	int min_i = -1;
+	int min_dist = INT_MAX_B;
+	for (i = 0; i < 24; ++i) {
+		printf("i= %d blue_loc= %d distance= %d\n", i, result[i].b_loc[2], result[i].distance); 
+		if (result[i].b_loc[2] == 8) {
+			if ((min_i < 0) || (min_dist > result[i].distance)) {
+				min_i = i;
+				min_dist = result[i].distance;
+			}
+		}
+	}
+	return min_i;
 }
 
 void Block_area::test4(int pb, int nb, int ng, int ny, int nr)
 {
 	fp = fopen("path_orders.txt", "w");
 	if (fp == NULL) {
-		printf("ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—\n");
+		printf("ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”s\n");
 		return;
 	}
 
@@ -664,11 +673,11 @@ void Block_area::test4(int pb, int nb, int ng, int ny, int nr)
 	fclose(fp);
 }
 
-// ã‚³ãƒ¼ãƒ‰ã‚’ä¸ãˆã¦	ï¼”ãƒ–ãƒ­ãƒƒã‚¯ã«å¯¾ã™ã‚‹è‰²å‰²ã‚Šå½“ã¦ã®çµŒè·¯ã‚’è¨ˆç®—
+// ƒR[ƒh‚ğ—^‚¦‚Ä	‚SƒuƒƒbƒN‚É‘Î‚·‚éFŠ„‚è“–‚Ä‚ÌŒo˜H‚ğŒvZ
 void Block_area::test5(int code)
 {
 	int j, k, flag, b_loc[5], dist;
-	int rn = 0; // æ›¸è¾¼ã‚€resulté…åˆ—ã®ç•ªå·
+	int rn = 0; // ‘‚Şresult”z—ñ‚Ì”Ô†
 	
 	fp = fopen("test5_log.txt", "w");
 
@@ -683,13 +692,13 @@ void Block_area::test5(int code)
 			int dc = dict[j][k + 1];
 			int rg = ring[b_loc[k]].get_color();
 			if (dc == rg) {
-				flag = 1; break; //	ç½®ãå ´ã¨ãƒ–ãƒ­ãƒƒã‚¯ã®è‰²ãŒåŒã˜å ´åˆã¯æ’é™¤ã™ã‚‹
+				flag = 1; break; //	’u‚«ê‚ÆƒuƒƒbƒN‚ÌF‚ª“¯‚¶ê‡‚Í”rœ‚·‚é
 			}
 			//printf("j = %d dict = %d ring_c= %d\n", j, dc, rg); 
 			init_location[dict[j][k + 1]] = b_loc[k]; 
 		}
 		if (flag) { flag = 0; continue; }
-		//if (init_location[2] != 8) continue; // åœ°åŒºå¤§ä¼šã§ã¯é’ãƒ–ãƒ­ãƒƒã‚¯ã®åˆæœŸç½®ãå ´ã¯8ç•ª
+		//if (init_location[2] != 8) continue; // ’n‹æ‘å‰ï‚Å‚ÍÂƒuƒƒbƒN‚Ì‰Šú’u‚«ê‚Í8”Ô
 		//if (ring[init_location[3]].get_color() == ring[init_location[4]].get_color() && ring[init_location[4]].get_color() == ring[init_location[5]].get_color()) continue;
 
 		fprintf(fp, "rn= %d  init_loc_id= %d [B,G,Y,R] = [ ", rn, j);
@@ -739,11 +748,25 @@ void Block_area::test5(int code)
 
 void Block_area::test6(void)
 {
-	selected_result = select(8, 12, 0, 4); // è‰²ãƒ–ãƒ­ãƒƒã‚¯ã®é…ç½®ã§resultã‚’é¸æŠ
+	selected_result = select(8, 12, 0, 4); // FƒuƒƒbƒN‚Ì”z’u‚Åresult‚ğ‘I‘ğ
 	printf("selected_result= %d\n", selected_result);
 }
 
-/* ãƒ‘ãƒ¯ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¼ãƒ‰ã‹ã‚‰ãƒ‘ãƒ¯ãƒ¼ã‚¹ãƒãƒƒãƒˆã®å¯èƒ½ãªçµ„ã¿åˆã‚ã›ã‚’è¨˜æ†¶ã™ã‚‹ target_tb[8] ã‚’ç”Ÿæˆã™ã‚‹*/
+void Block_area::test8(void)
+{
+	selected_result = select(8, 12, 0, 4); // FƒuƒƒbƒN‚Ì”z’u‚Åresult‚ğ‘I‘ğ
+	printf("selected_result= %d\n", selected_result);
+	selected_result = select(8, 0, 12, 4); // FƒuƒƒbƒN‚Ì”z’u‚Åresult‚ğ‘I‘ğ
+	printf("selected_result= %d\n", selected_result);
+	selected_result = select(8, 4, 0, 12); // FƒuƒƒbƒN‚Ì”z’u‚Åresult‚ğ‘I‘ğ
+	printf("selected_result= %d\n", selected_result);
+	selected_result = select(8, 0, 4, 12); // FƒuƒƒbƒN‚Ì”z’u‚Åresult‚ğ‘I‘ğ
+	printf("selected_result= %d\n", selected_result);
+	selected_result = select(8, 99, 4, 12); // FƒuƒƒbƒN‚Ì”z’u‚Åresult‚ğ‘I‘ğ
+	printf("selected_result= %d\n", selected_result);
+}
+
+/* ƒpƒ[ƒuƒƒbƒNƒR[ƒh‚©‚çƒpƒ[ƒXƒ|ƒbƒg‚Ì‰Â”\‚È‘g‚İ‡‚í‚¹‚ğ‹L‰¯‚·‚é target_tb[8] ‚ğ¶¬‚·‚é*/
 void Block_area::make_target_table(int pb_code)
 {
 	int i, j, sq, sq_i, area;
@@ -795,7 +818,7 @@ void Block_area::make_target_table(int pb_code)
 	printf("\n");
 }
 
-/* 4ãƒ–ãƒ­ãƒƒã‚¯ã‚’ãƒ‘ãƒ¯ãƒ¼ã‚¹ãƒãƒƒãƒˆã®å¯èƒ½ãªçµ„ã¿åˆã‚ã›ã‚’è¨˜æ†¶ã™ã‚‹ target_tb[8] ã«ç§»å‹•ã™ã‚‹æœ€çŸ­çµŒè·¯ã‚’æ±‚ã‚ã‚‹ã€‚*/
+/* 4ƒuƒƒbƒN‚ğƒpƒ[ƒXƒ|ƒbƒg‚Ì‰Â”\‚È‘g‚İ‡‚í‚¹‚ğ‹L‰¯‚·‚é target_tb[8] ‚ÉˆÚ“®‚·‚éÅ’ZŒo˜H‚ğ‹‚ß‚éB*/
 int Block_area::move_four_blocks_to_targets(int pblk)
 {
 	int n, res, i, j;
@@ -822,8 +845,8 @@ int Block_area::move_four_blocks_to_targets(int pblk)
 				//printf("move_blocks_to_squares: power_blk = %d square = %d order = %d res = %d distance= %d\n", pblk, sq, n, res, path.get_distance());
 				if (min > path.get_distance()) {
 					min = path.get_distance();
-					min_target = j; // æœ€çŸ­çµŒè·¯ã¨ãªã‚‹ target_tb ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ //
-					min_order = n; // æœ€çŸ­çµŒè·¯ã¨ãªã‚‹ é †åº ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ //
+					min_target = j; // Å’ZŒo˜H‚Æ‚È‚é target_tb ‚ÌƒCƒ“ƒfƒbƒNƒX //
+					min_order = n; // Å’ZŒo˜H‚Æ‚È‚é ‡˜ ‚ÌƒCƒ“ƒfƒbƒNƒX //
 					//printf("min_update: min_order= %d\n", min_order);
 					path.p_copy(pdata, min_order);
 				}
@@ -854,9 +877,10 @@ int main(int argc, char *argv[])
 	//b_area.test3();
 	//b_area.test4(2, 8, 4, 12, 9);
 	//b_area.test4(8, 8, 1, 2, 3);
-	//b_area.test4(4, 8, 15, 14, 13); // ãƒ‘ãƒ¯ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯4ã€é’8ã€ç·‘15ã€é»„14ã€èµ¤13
+	//b_area.test4(4, 8, 15, 14, 13); // ƒpƒ[ƒuƒƒbƒN4AÂ8A—Î15A‰©14AÔ13
 	b_area.test5(18628); // 18628, 96722, 158435, 228340
-	//b_area.test6();
+	b_area.test8();
+	b_area.test6();
 	//b_area.test7();
 	return 0;
 }

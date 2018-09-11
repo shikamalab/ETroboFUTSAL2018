@@ -21,6 +21,7 @@ BT::BT() {
 	bt_size = 0;
 	eflag = 0;
 	bt = NULL;
+	select_flag = 1; // 20180911
 }
 
 int BT::open(void)
@@ -91,7 +92,9 @@ int BT::proc_msg(char h)
 		printf("%d %d %d %d\n", m[0], m[1], m[2], m[3]);
 		fputc('b', bt);
 		color1 = 1000000 * m[0] + 10000 * m[1] + 100 * m[2] + m[3];
-		selected_result = gB_area->select(m[0], m[1], m[2], m[3]);
+		if (select_flag == 1) { // 20180911
+			selected_result = gB_area->select(m[0], m[1], m[2], m[3]);
+		}
 	}
 	return 0;
 }

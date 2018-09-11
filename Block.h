@@ -126,6 +126,7 @@ public:
 	void test5(int code);
 	void test6(void);
 	void test7(void);
+	void test8(void);
 };
 
 #endif

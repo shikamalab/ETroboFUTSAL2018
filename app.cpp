@@ -151,6 +151,9 @@ void main_task(intptr_t unused)
     while(1)
     {
         if (touchSensor->isPressed()) break; // タッチセンサが押された
+
+		gBT->stop_select(); // 20180911
+
         // uint8_t c = fgetc(bt); // 受信
         // fputc(c, bt); //Bluetoothエコーバック
         if (bt_cmd == 1)    break;  //リモートスタート
