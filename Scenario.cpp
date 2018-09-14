@@ -110,11 +110,11 @@ void Scenario::L(){
     mRP->set_pid_params(1.84, 0.0, 0.09);  // 1.84, 0.1, 0.075
     mRP->run_pid(0, 45, 750);
     // 直進4
-    mRP->set_pid_params(1.1, 0.1, 0.08);
+    mRP->set_pid_params(1.1, 0.03, 0.07);
 	mRP->run_pid(0, 55, 200);
-	mRP->set_pid_params(1.1, 0.1, 0.08); //1.1,  0.1,  0.08
+	mRP->set_pid_params(1.1, 0.03, 0.07); //1.1,  0.1,  0.08
 	mRP->run_pid(0, 61, 200);
-	mRP->set_pid_params(1.1, 0.1, 0.08);
+	mRP->set_pid_params(1.1, 0.03, 0.07);
 	mRP->run_pid(0, 65, 2000);
     //ゴール後
     //mRP->set_pid_params(1.7, 0.00, 0.1);
