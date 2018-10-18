@@ -27,98 +27,12 @@ void Scenario::R(){
     mRP->set_pid_params(1.0, 0.03, 0.09);
     mRP->run_pid(0, 60, 2000);
     ev3_speaker_play_tone(NOTE_A4, 300);
-    // カーブ1
-    mRP->set_pid_params(1.74, 0.01, 0.15);
-    mRP->run_pid(0, 55, 1840);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    // 直進2
-    mRP->set_pid_params(1.0, 0.03, 0.09);
-    mRP->run_pid(0, 55, 450);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    // カーブ2
-    mRP->set_pid_params(1.6, 0.03, 0.13);
-    mRP->run_pid(0, 45, 550);
-    // カーブ3
-    mRP->set_pid_params(2.3, 0.03, 0.10);
-    mRP->run_pid(0, 45, 650);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    // 直進3
-    mRP->set_pid_params(1.0, 0.03, 0.075);
-    mRP->run_pid(0, 50, 700);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    // カーブ4
-    mRP->set_pid_params(1.75, 0.03, 0.13);
-    mRP->run_pid(0, 45, 1200);
-    // 直進4
-    mRP->set_pid_params(1.0, 0.03, 0.09);
-    mRP->run_pid(0, 50, 2570);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    mRP->set_pid_params(0.9, 0.03, 0.075);
-    mRP->run_pid(0, 20, 530);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    // 灰色
-    mRP->run_pid(2, 30, 150);
-    ev3_speaker_play_tone(NOTE_A4, 300);
-    // 灰色後直線1
-    mRP->set_pid_params(0.35, 0.15, 0.08);
-     mRP->run_pid(0, 30, 250);
-     //ev3_speaker_play_tone(NOTE_A4, 300);
-    // //灰色後カーブ2
-     mRP->set_pid_params(0.7, 0.15, 0.05);
-     mRP->run_pid(0, 20, 700);
-     //ev3_speaker_play_tone(NOTE_A4, 300);
-    // //灰色後直線2
-     mRP->set_pid_params(1.0, 0.15, 0.01);
-     mRP->run_pid(0, 10, 300);
-     //ev3_speaker_play_tone(NOTE_A4, 300);
-     //無理やりエッジ切り替え
-     mRP->TurnR(10);
-     mRP->move(10, 2, 10);
-    //灰色後直線3
-    mRP->set_pid_params(1.0, 0.15, 0.01);
-    mRP->run_pid(1, 10, 290); //340
-    //ev3_speaker_play_tone(NOTE_A4, 300);
-   
-    // //パズル侵入
-     DoPuzzle();
+    
+    
 
 }
 
 void Scenario::L(){
-    mRP->set_pid_params(0.0, 0.01, 0.0);    
-    mRP->run_pid(0, 30, 50);
-	// 直進1
-	mRP->set_pid_params(1.0, 0.03, 0.077);
-	mRP->run_pid(0, 65, 2200);//65
-	// 第１コーナー
-	mRP->set_pid_params(1.0, 0.0, 0.1);//1.2
-	mRP->run_pid(0, 55, 1800);//50
-    // 直進2
-	mRP->set_pid_params(1.0, 0.1, 0.09);
-	mRP->run_pid(0, 55, 1600);//50
-	mRP->set_pid_params(1.0, 0.1, 0.09);
-	mRP->run_pid(0, 50, 150);	//45
-	ev3_speaker_play_tone(NOTE_AS4, 300);
-	// 第2コーナー
-    mRP->set_pid_params(1.8, 0.0, 0.09);//1.8, 0.0, 0.09
-    mRP->run_pid(0, 45, 600);
-    // 直進3
-    mRP->set_pid_params(1.0, 0.1, 0.09);
-    mRP->run_pid(0, 45, 650);
-    ev3_speaker_play_tone(NOTE_AS4, 300);
-    // 第3コーナー Ｄの値０．０６元の Ｉの下の値０．０５
-    mRP->set_pid_params(1.84, 0.0, 0.09);  // 1.84, 0.1, 0.075
-    mRP->run_pid(0, 45, 750);
-    // 直進4
-    mRP->set_pid_params(1.1, 0.03, 0.07);
-	mRP->run_pid(0, 55, 200);
-	mRP->set_pid_params(1.1, 0.03, 0.07); //1.1,  0.1,  0.08
-	mRP->run_pid(0, 61, 200);
-	mRP->set_pid_params(1.1, 0.03, 0.07);
-	mRP->run_pid(0, 65, 2000);
-    //ゴール後
-    //mRP->set_pid_params(1.7, 0.00, 0.1);
-    //mRP->run_pid(0, 40, 570);
     
 }
 
@@ -143,7 +57,7 @@ void Scenario::TEST(void){
     // スタート
       mRP->set_pid_params(0.00, 0.5, 0.0); //0.4
       mRP->run_pid(1, 30, 50); //0
-   
+
      mRP->set_pid_params(0.35, 0.15, 0.08);
      mRP->run_pid(0, 30, 250);
      ev3_speaker_play_tone(NOTE_A4, 300);
@@ -162,15 +76,15 @@ void Scenario::TEST(void){
     mRP->set_pid_params(1.0, 0.15, 0.01);
     mRP->run_pid(1, 10, 290); //340
     ev3_speaker_play_tone(NOTE_A4, 300);
-   
+
     // //パズル侵入
      DoPuzzle();
 
-  
+
 }
 
 void Scenario::TEST2(void){
-   
+
 }
 
 
@@ -196,18 +110,18 @@ fprintf(sfp, "DP1\n");
     // ext_tsk();//debug
 
     mRP->move(-10, 0, 200);
-    
+
     mRP->reset_pid_params();
-   
+
     mRP->set_pid_params(0.14, 0.01, 0.045); //0.14, 0.01, 0.045
     //ev3_speaker_play_tone(NOTE_A4, 300);                      0.15, 0.01, 0.04
 
 
-    
+
     //0.4, 0.5, 0.03
     //mRP->ColorDetect(0);
 
-    
+
 
     //入口選択
 //    block_ptn = mBArea->select(10000);
@@ -233,7 +147,7 @@ fprintf(sfp, "DP1\n");
         //ext_tsk();//debug
 
         }
-    
+
 
     //ここからパズル（予定
     //Block()が実際に動作し、並べ終わった後
@@ -322,7 +236,7 @@ int Scenario::Block(void){
         return 450;
     } else {
         return 560;
-    } 
+    }
 }
 
 void Scenario::L_SHORT(){
